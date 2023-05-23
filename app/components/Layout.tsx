@@ -1,22 +1,28 @@
-import { FC, ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
+import styled from "styled-components";
 import Header from "./Header";
-import { styled } from "styled-components";
+// import Header from "./Header";
 
 
 const Container = styled.div`
-heigh: 100px;
-weight: 100px;
+height: 100%;
+width: 100%;
 `
 
-interface IProps {
-    children: ReactNode,
-}
+const Main = styled.main`
+    
+`
 
-const Layout: FC<IProps> = ({children}): ReactElement=>{
+
+
+const Layout = ({ children }: any): ReactElement => {
 
     return (
         <Container>
-            {children}
+            <Header />
+            <Main>
+                {children}
+            </Main>
         </Container>
     )
 }
