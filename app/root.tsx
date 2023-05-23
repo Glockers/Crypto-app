@@ -8,26 +8,48 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import styles from "~/styles/global.css";
+import Layout from "~/components/Layout";
+import Header from "~/components/Header";
 
-export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-];
+
+export const links: LinksFunction = () => {
+  return styles ? [
+    {
+      rel: "stylesheet",
+      href: styles,
+    },
+  ] : []
+};
 
 export default function App() {
+  return (
+    <Document>
+
+      <Layout>
+        <Header />
+        <Outlet />
+      </Layout>
+    </Document>
+  );
+}
+
+function Document({ children, title }: any) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>{title ? title : "Home page"}</title>
         <Meta />
         <Links />
       </head>
       <body>
-        <Outlet />
+        {children}
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
+        {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
       </body>
     </html>
-  );
+  )
 }
