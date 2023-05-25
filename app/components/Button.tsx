@@ -1,9 +1,9 @@
-import React, { ButtonHTMLAttributes } from 'react';
-import styled from 'styled-components';
+import React, { ButtonHTMLAttributes } from "react";
+import styled, { keyframes } from "styled-components";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     // Дополнительные свойства кнопки, если необходимо
-    variant?: 'primary' | 'secondary';
+    variant?: "primary" | "secondary" | "succsess" | "error";
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -13,24 +13,43 @@ const StyledButton = styled.button<ButtonProps>`
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-
+  transition: transform 0.3s ease;
   /* Стили в зависимости от варианта */
   ${({ variant }) => {
         switch (variant) {
-            case 'primary':
+            case "primary":
                 return `
           background-color: #007bff;
           color: #fff;
         `;
-            case 'secondary':
+            case "secondary":
                 return `
           background-color: #6c757d;
           color: #fff;
         `;
+            case "succsess":
+                return `
+          background-color: green;
+          color: #fff;
+        `;
+            case "succsess":
+                return `
+          background-color: green;
+          color: #fff;
+        `;
+            case "error":
+                return `
+          background-color: red;
+          color: #fff;
+        `;
             default:
-                return '';
+                return "";
         }
     }}
+
+  &:active {
+    transform: scale(0.9);
+  }
 `;
 
 const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import request from "../utils";
+import { useEffect, useState } from "react";
 
 export interface CoinCapAssetsResponse {
     data: Array<Crypto>;
@@ -48,15 +49,11 @@ const queryFn = async ({
 };
 
 export const useGetAllCrypto = (props: IUseGetMeQueryProps) => {
-    const { data, isLoading, error, isSuccess } = useQuery<CoinCapAssetsResponse, AxiosError>(
+    const { data, isLoading, error, isSuccess, } = useQuery<CoinCapAssetsResponse, AxiosError>(
         {
             queryKey: ["cryptos", props.state],
             queryFn: () => queryFn(props),
-            staleTime: 1000 * 10,
-            // retry: false,
-            // retryOnMount: false,
-            // refetchOnMount: false,
-            // refetchOnWindowFocus: false,
+            refetchInterval: 10000,
         }
     );
 

@@ -33,6 +33,7 @@ const StyledTable = styled.table`
     color: rgba(0, 0, 0, 0.95) !important;
     cursor: pointer;
   }
+
 `;
 
 export const Table = <T extends { id: string | number }>({ columns, countElementOnPage, dataSource }: ITableProps<T>) => {
@@ -58,7 +59,8 @@ export const Table = <T extends { id: string | number }>({ columns, countElement
                             countElementOnPage * currentPage
                         )
                         .map((row, index) => (
-                            <tr key={index} onClick={() => navigate(`/about-crypto/${row.id}`)}>
+                            // onClick={() => navigate(`/about-crypto/${row.id}`)}
+                            <tr key={index} >
                                 {columns.map((column, colIndex) => (
                                     <td key={colIndex}>{column?.render ? column?.render(row) as any : row[column.dataIndex] as any}</td>
                                 ))}
