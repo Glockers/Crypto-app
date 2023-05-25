@@ -49,11 +49,19 @@ const ContainerStyled = styled.div`
   gap: 30px;
 `;
 
-const PopularElement = styled(BasicStyle)``;
+const PopularElement = styled(BasicStyle)`
+display: flex;
+gap: 2px;
+`;
 
 
 
-
+const ImageWrapper = styled.div`
+  img{
+    height: 30px !important;
+    width: 30px !important;
+  }
+`
 
 const Header = (): ReactElement => {
   const [myMoney, setMyMoney] = useState(134.32);
@@ -71,6 +79,7 @@ const Header = (): ReactElement => {
         <ThreePopularCryptoStyle>
           {data?.data.map((element) => {
             return <PopularElement>
+              <ImageWrapper><img src={element.img} /></ImageWrapper>
               {element.name}&nbsp;<SmartText color="green">$</SmartText>{convertToNormalNumber(element.priceUsd).toLocaleString("en-US")}({getJSXElementProcent(converToProcent(element.changePercent24Hr))})
             </PopularElement>
           })}

@@ -35,12 +35,17 @@ const queryFn = async ({
 
     if (state === "popular") {
         const response = await request().get<CoinCapAssetsResponse>("/assets?limit=3")
-        // console.log("test", converToProcent(response.data.data[0].changePercent24Hr))
+        response.data.data = response.data.data.map(elem => {
+            return { ...elem, img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
+        })
         return response.data
     }
 
     if (state === "all") {
-        const response = await request().get<CoinCapAssetsResponse>("/assets")
+        let response = await request().get<CoinCapAssetsResponse>("/assets")
+        response.data.data = response.data.data.map(elem => {
+            return { ...elem, img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
+        })
         return response.data
     }
 

@@ -5,5 +5,6 @@ interface Crypto {
     symbol: string;
     changePercent24Hr: number;
     priceUsd: number;
+    img?: string;
 }
 

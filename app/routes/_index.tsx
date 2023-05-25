@@ -30,10 +30,19 @@ const Text = styled.h1`
 `;
 
 const WrapperNameCrypto = styled.div`
+display: flex;
+gap: 5px;
   &:hover {
     text-decoration: underline;
   }
 `;
+
+const ImageWrapper = styled.div`
+  img{
+    height: 30px !important;
+    width: 30px !important;
+  }
+`
 
 const columns: ITableColumns<Crypto>[] = [
   { title: "Rank", dataIndex: "rank" },
@@ -43,7 +52,7 @@ const columns: ITableColumns<Crypto>[] = [
     render(record) {
       return (
         <Link to={`/about-crypto/${record.id}`}>
-          <WrapperNameCrypto>{record.name}</WrapperNameCrypto>
+          <WrapperNameCrypto><ImageWrapper><img src={record.img} /></ImageWrapper><div>{record.name}</div></WrapperNameCrypto>
         </Link>
       );
     },
