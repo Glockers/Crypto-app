@@ -13,7 +13,7 @@ import Modal from "~/components/Modal";
 import Pagination from "~/components/Pagination";
 import { Spinner } from "~/components/Spinner";
 import { ITableColumns, Table } from "~/components/Table";
-import { converToProcent, getJSXElementProcent } from "~/utils/convertor";
+import { converToProcent, convertToNormalNumber, getJSXElementProcent } from "~/utils/convertor";
 
 // export const meta: V2_MetaFunction = () => {
 //   return [{ title: "New Remix App" }];
@@ -59,7 +59,11 @@ const columns: ITableColumns<Crypto>[] = [
       );
     },
   },
-  { title: "Price", dataIndex: "priceUsd" },
+  {
+    title: "Price", dataIndex: "priceUsd", render(record) {
+      return "$" + convertToNormalNumber(record.priceUsd).toLocaleString("en-US")
+    },
+  },
   {
     title: "Change(24Hr)",
     dataIndex: "changePercent24Hr",
@@ -83,14 +87,14 @@ const columns: ITableColumns<Crypto>[] = [
 export default function Index() {
   // const data = useLoaderData<typeof loader>();
   const { data, isLoading } = useGetAllCrypto({ state: "all" });
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
+  // const [modalOpen, setModalOpen] = useState(false);
+  // const handleOpenModal = () => {
+  //   setModalOpen(true);
+  // };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setModalOpen(false);
+  // };
 
   return (
     <Container>
@@ -101,7 +105,7 @@ export default function Index() {
         <Table<Crypto>
           dataSource={data?.data ? data.data : []}
           columns={columns}
-          countElementOnPage={5}
+          countElementOnPage={10}
         />
       )}
     </Container>

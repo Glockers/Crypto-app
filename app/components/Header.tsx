@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import profileImage from "../../public/user-profile.svg";
 import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
-import { converToProcent, getJSXElementProcent } from "~/utils/convertor";
+import { converToProcent, convertToNormalNumber, getJSXElementProcent } from "~/utils/convertor";
 import { SmartText } from "./Text";
 
 
@@ -70,7 +70,9 @@ const Header = (): ReactElement => {
 
         <ThreePopularCryptoStyle>
           {data?.data.map((element) => {
-            return <PopularElement>{element.name} {element.priceUsd}<SmartText color="green">$</SmartText>({getJSXElementProcent(converToProcent(element.changePercent24Hr))})</PopularElement>
+            return <PopularElement>
+              {element.name}&nbsp;<SmartText color="green">$</SmartText>{convertToNormalNumber(element.priceUsd).toLocaleString("en-US")}({getJSXElementProcent(converToProcent(element.changePercent24Hr))})
+            </PopularElement>
           })}
         </ThreePopularCryptoStyle>
         <CostDifferenceStyle>

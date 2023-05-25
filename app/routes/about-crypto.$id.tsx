@@ -1,5 +1,18 @@
 import { ReactElement } from "react";
 import { styled } from "styled-components";
+import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend,
+} from 'chart.js';
+
 
 const Layout = styled.div`
   overflow: hidden;
@@ -18,7 +31,6 @@ const CryptoHeader = styled.div`
 `;
 
 const Container = styled.div`
-
 padding: 1rem;
 `;
 
@@ -38,13 +50,49 @@ const ContainerControl = styled.div`
         flex: 1 1 0%;
 `
 
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend
+);
+
+const options = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'top' as const,
+        },
+    },
+};
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+const data = {
+    labels,
+    datasets: [
+        {
+            fill: true,
+            data: labels.map(() => 1),
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        },
+    ],
+};
+
 const CryptoDetail = (): ReactElement => {
     return (
         <Layout>
             <CryptoHeader>CryptoDetail</CryptoHeader>
             <Container>
                 <SubContainer>
-                    <ContainerInfo>Content</ContainerInfo>
+                    <ContainerInfo>
+                        Content
+                        <Line options={options} data={data} />
+                    </ContainerInfo>
                     <ContainerControl>Control</ContainerControl>
                 </SubContainer>
             </Container>
