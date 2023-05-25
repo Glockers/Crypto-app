@@ -1,11 +1,11 @@
 :root {
-    --color-foreground: hsl(0, 0%, 0%);
+    /* --color-foreground: hsl(0, 0%, 0%);
     --color-background: hsl(0, 0%, 100%);
     --color-primary: hsl(230, 100%, 50%);
     --color-primary-light: hsl(230, 100%, 60%);
     --color-primary-dark: hsl(230, 100%, 40%);
     --color-gray-dark: hsl(0, 0%, 60%);
-    --color-gray-light: hsl(0, 0%, 90%);
+    --color-gray-light: hsl(0, 0%, 90%); */
     --font-body: -apple-system, "Segoe UI", Helvetica Neue, Helvetica, Roboto,
         Arial, sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji";
 }
@@ -40,7 +40,4 @@ a {
 
 a:hover {
     color: var(--color-primary-dark);
-    text-decoration: underline;
 }
-
-

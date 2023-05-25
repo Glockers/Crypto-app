@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react";
 import styles from "~/styles/global.css";
 import Layout from "~/components/Layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import Header from "~/components/Header";
 
 
@@ -22,12 +23,16 @@ export const links: LinksFunction = () => {
   ] : []
 };
 
+
+const queryClient = new QueryClient()
 export default function App() {
   return (
     <Document>
-      <Layout>
-        <Outlet />
-      </Layout>
+      <QueryClientProvider client={queryClient}>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </QueryClientProvider>
     </Document>
   );
 }

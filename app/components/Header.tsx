@@ -1,9 +1,10 @@
 import { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import profileImage from "../../public/user-profile.svg";
-import { crypto_api } from "~/utils/api/config";
-import { CoinCapAssetsResponse } from "~/routes/_index";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
+import { converToProcent, getJSXElementProcent } from "~/utils/convertor";
+import { SmartText } from "./Text";
+
 
 const BasicStyle = styled.div`
   display: flex;
@@ -57,24 +58,20 @@ const PopularElement = styled(BasicStyle)``;
 const Header = (): ReactElement => {
   const [myMoney, setMyMoney] = useState(134.32);
   const [cost, setCost] = useState(2.38);
+  const { data } = useGetAllCrypto({ state: "popular" })
 
-  const [data, setData] = useState<CoinCapAssetsResponse>();
-
-  useEffect(() => {
-    crypto_api.get<CoinCapAssetsResponse>("/assets?limit=10").then(el => setData(el.data))
-  }, []);
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  // useEffect(() => {
+  //   axios.get(`https://api.coincap.io/v2/assets`).then(el => console.log("test", el.data))
+  // })
 
   return (
     <HeaderStyle>
       <ContainerStyled>
+
         <ThreePopularCryptoStyle>
-          {/* <PopularElement>{result2[0].id}</PopularElement>
-          <PopularElement>{result2[1].id}</PopularElement>
-          <PopularElement>{result2[2].id}</PopularElement> */}
+          {data?.data.map((element) => {
+            return <PopularElement>{element.name} {element.priceUsd}<SmartText color="green">$</SmartText>({getJSXElementProcent(converToProcent(element.changePercent24Hr))})</PopularElement>
+          })}
         </ThreePopularCryptoStyle>
         <CostDifferenceStyle>
           {`${myMoney} USD`}$
