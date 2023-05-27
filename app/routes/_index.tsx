@@ -4,7 +4,6 @@ import { QueryClient, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import styled from "styled-components";
 import {
-  IUseGetMeQueryProps,
   getAllCoinsFn,
   useGetAllCrypto,
 } from "~/api/query/useGetAllCrypto";

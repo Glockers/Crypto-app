@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { client } from "../utils";
+import { TUnixTimestamp } from "~/utils/convertor/convertor.models";
 
-type TUnixTimestamp = number;
 
 export interface IHistoryCrypto {
     data: Array<{
@@ -16,10 +16,9 @@ export interface IHistoryCrypto {
 
 interface IProps {
     id: string,
-    // initialData?: IHistoryCrypto,
 }
 
-const queryFn = async ({
+const getHistoryCoinFn = async ({
     id,
 }: IProps): Promise<IHistoryCrypto> => {
     const currentDate = new Date().getTime();
@@ -36,7 +35,7 @@ export const useGetHistoryCoin = (props: IProps) => {
     const { data, isLoading, error, isSuccess, } = useQuery<IHistoryCrypto, AxiosError>(
         {
             queryKey: ["coin/history", props.id],
-            queryFn: () => queryFn(props),
+            queryFn: () => getHistoryCoinFn(props),
         }
     );
 

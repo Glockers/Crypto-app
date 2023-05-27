@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 
 interface IText {
-    color?: string;
-    size?: number;
+  color?: string;
+  size?: number;
 }
 
 export const SmartText = styled.div<IText>`
