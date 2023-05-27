@@ -2,9 +2,12 @@ import { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import profileImage from "../../public/user-profile.svg";
 import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
-import { converToProcent, convertToNormalNumber, getJSXElementProcent } from "~/utils/convertor";
+import {
+  converToProcent,
+  convertToNormalNumber,
+  getJSXElementProcent,
+} from "~/utils/convertor";
 import { SmartText } from "./Text";
-
 
 const BasicStyle = styled.div`
   display: flex;
@@ -50,23 +53,21 @@ const ContainerStyled = styled.div`
 `;
 
 const PopularElement = styled(BasicStyle)`
-display: flex;
-gap: 2px;
+  display: flex;
+  gap: 2px;
 `;
 
-
-
 const ImageWrapper = styled.div`
-  img{
+  img {
     height: 30px !important;
     width: 30px !important;
   }
-`
+`;
 
 const Header = (): ReactElement => {
   const [myMoney, setMyMoney] = useState(134.32);
   const [cost, setCost] = useState(2.38);
-  const { data } = useGetAllCrypto({ state: "popular" })
+  const { data } = useGetAllCrypto({ state: "popular" });
 
   // useEffect(() => {
   //   axios.get(`https://api.coincap.io/v2/assets`).then(el => console.log("test", el.data))
@@ -75,13 +76,24 @@ const Header = (): ReactElement => {
   return (
     <HeaderStyle>
       <ContainerStyled>
-
         <ThreePopularCryptoStyle>
           {data?.data.map((element) => {
-            return <PopularElement>
-              <ImageWrapper><img src={element.img} /></ImageWrapper>
-              {element.name}&nbsp;<SmartText color="green">$</SmartText>{convertToNormalNumber(element.priceUsd).toLocaleString("en-US")}({getJSXElementProcent(converToProcent(element.changePercent24Hr))})
-            </PopularElement>
+            return (
+              <PopularElement key={element.id}>
+                <ImageWrapper>
+                  <img src={element.img} />
+                </ImageWrapper>
+                {element.name}&nbsp;<SmartText color="green">$</SmartText>
+                {convertToNormalNumber(element.priceUsd).toLocaleString(
+                  "en-US"
+                )}
+                (
+                {getJSXElementProcent(
+                  converToProcent(element.changePercent24Hr)
+                )}
+                )
+              </PopularElement>
+            );
           })}
         </ThreePopularCryptoStyle>
         <CostDifferenceStyle>

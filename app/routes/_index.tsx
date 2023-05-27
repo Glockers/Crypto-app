@@ -1,16 +1,18 @@
 import { V2_MetaFunction, json } from "@remix-run/node";
-import { Link, useLoaderData, } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import styled from "styled-components";
-import {
-  getAllCoinsFn,
-  useGetAllCrypto,
-} from "~/api/query/useGetAllCrypto";
+import { getAllCoinsFn, useGetAllCrypto } from "~/api/query/useGetAllCrypto";
+import { ICoin } from "~/api/query/useGetOneCoin";
 import Button from "~/components/Button";
 import { Spinner } from "~/components/Spinner";
 import { ITableColumns, Table } from "~/components/Table";
-import { converToProcent, convertToNormalNumber, getJSXElementProcent } from "~/utils/convertor";
+import {
+  converToProcent,
+  convertToNormalNumber,
+  getJSXElementProcent,
+} from "~/utils/convertor";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Main" }];
@@ -27,21 +29,21 @@ const Text = styled.h1`
 `;
 
 const WrapperNameCrypto = styled.div`
-display: flex;
-gap: 5px;
+  display: flex;
+  gap: 5px;
   &:hover {
     text-decoration: underline;
   }
 `;
 
 const ImageWrapper = styled.div`
-  img{
+  img {
     height: 30px !important;
     width: 30px !important;
   }
-`
+`;
 
-const columns: ITableColumns<Crypto>[] = [
+const columns: ITableColumns<ICoin>[] = [
   { title: "Rank", dataIndex: "rank" },
   {
     title: "Name",
@@ -49,7 +51,12 @@ const columns: ITableColumns<Crypto>[] = [
     render(record) {
       return (
         <Link to={`/about-crypto/${record.id}`}>
-          <WrapperNameCrypto><ImageWrapper><img src={record.img} /></ImageWrapper><div>{record.name}</div></WrapperNameCrypto>
+          <WrapperNameCrypto>
+            <ImageWrapper>
+              <img src={record.img} />
+            </ImageWrapper>
+            <div>{record.name}</div>
+          </WrapperNameCrypto>
         </Link>
       );
     },
@@ -66,8 +73,12 @@ const columns: ITableColumns<Crypto>[] = [
     },
   },
   {
-    title: "Price", dataIndex: "priceUsd", render(record) {
-      return "$" + convertToNormalNumber(record.priceUsd).toLocaleString("en-US")
+    title: "Price",
+    dataIndex: "priceUsd",
+    render(record) {
+      return (
+        "$" + convertToNormalNumber(record.priceUsd).toLocaleString("en-US")
+      );
     },
   },
   {
@@ -90,13 +101,12 @@ const columns: ITableColumns<Crypto>[] = [
   },
 ];
 
-
 export async function loader() {
-  // const coins = await getAllCoinsFn({ state: "all" })
-  // return json({ coins })
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(["cryptos", "all"], () => getAllCoinsFn({ state: "all" }))
-  return json({ dehydratedState: dehydrate(queryClient) })
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(["cryptos", "all"], () =>
+    getAllCoinsFn({ state: "all" })
+  );
+  return json({ dehydratedState: dehydrate(queryClient) });
 }
 
 export default function Index() {
@@ -108,7 +118,7 @@ export default function Index() {
         {isLoading ? (
           <Spinner />
         ) : (
-          <Table<Crypto>
+          <Table<ICoin>
             dataSource={data?.data ? data.data : []}
             columns={columns}
             countElementOnPage={10}

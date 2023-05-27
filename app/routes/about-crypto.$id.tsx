@@ -1,29 +1,41 @@
 import { ReactElement, useEffect, useMemo, useState } from "react";
-import { styled } from "styled-components";
 import { Line } from "react-chartjs-2";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Filler,
-    Legend,
-    ChartOptions,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+  ChartOptions,
 } from "chart.js";
-import { V2_MetaArgs, V2_MetaFunction } from "@remix-run/node";
-import { useGetHistoryCoin } from "~/api/query/useGetCryptoHistory";
-import { useParams } from "@remix-run/react";
+import {
+  ActionArgs,
+  LoaderArgs,
+  V2_MetaArgs,
+  V2_MetaFunction,
+  json,
+} from "@remix-run/node";
+import {
+  getHistoryCoinFn,
+  useGetHistoryCoin,
+} from "~/api/query/useGetCryptoHistory";
+import { Form, useParams } from "@remix-run/react";
 import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { SmartText } from "~/components/Text";
 import Button from "~/components/Button";
 import useToast from "~/components/Toast";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
+import styled from "styled-components";
+import { useGetCoin } from "~/api/query/useGetOneCoin";
+import { comparisonPrice } from "~/utils/comparison/comparison-price";
 
 export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
-    const param = args.params;
-    return [{ title: `About ${param.id}` }];
+  const param = args.params;
+  return [{ title: `About ${param.id}` }];
 };
 
 const Layout = styled.div`
@@ -52,6 +64,7 @@ const SubContainer = styled.div`
   margin-right: auto !important;
 
   display: flex;
+  gap: 10px;
 `;
 
 const ContainerInfo = styled.div`
@@ -59,84 +72,85 @@ const ContainerInfo = styled.div`
 `;
 
 const ContainerControl = styled.div`
-  flex: 1 1 0%;
-  height: 410px;
-  border-radius: 13px;
-  background: rgb(255, 255, 255);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 9px;
-  overflow: hidden;
-  padding: 10px;
-  max-width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  .control-wrapper {
+    margin-top: 55px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    height: 410px;
+    border-radius: 13px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 9px;
+    overflow: hidden;
+    padding: 10px;
+    max-width: 100%;
+  }
 `;
 
 const TitleContainer = styled.div`
-    text-align: center;
-    font-size: 30px;
-`
+  text-align: center;
+  font-size: 30px;
+  flex: 0;
+  margin-bottom: 30px;
+`;
 
 const InputContainer = styled.div`
-    border-radius: 12px;
-    padding: 14px;
-    border: 1px solid rgb(236, 239, 241);
-    background: rgb(249, 249, 249);
-`
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgb(236, 239, 241);
+  background: rgb(249, 249, 249);
+`;
 
 const Input = styled.input`
-    background-color: inherit;
-  width:100%;
+  background-color: inherit;
+  width: 100%;
   border: 0px;
   font-size: 24px;
-  &:focus{
+  &:focus {
     outline: none;
-    
   }
-`
+`;
 
 const InputContainetText = styled.div`
-    font-weight: bold;
-
-`
+  font-weight: bold;
+`;
 const ButtonContainer = styled.div`
-    text-align: center;
-`
-
-
-
+  text-align: center;
+`;
 
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Filler,
-    Legend
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
 );
 
 const options: ChartOptions<"line"> = {
-    responsive: true,
-    plugins: {
-        legend: {
-            // position: 'top' as const,
-            display: false,
-        },
+  responsive: true,
+  interaction: {
+    intersect: false,
+    mode: "index",
+  },
+  plugins: {
+    legend: {
+      display: false,
     },
-    scales: {
-        x: {
-            grid: {
-                display: false,
-            },
-        },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
     },
+  },
 };
 
 type TParams = {
-    id: string;
+  id: string;
 };
 
 const HistoryTitle = styled(SmartText)`
@@ -145,70 +159,135 @@ const HistoryTitle = styled(SmartText)`
   margin-bottom: 30px;
 `;
 
+const CustomForm = styled(Form)`
+  flex: 1;
+`;
 
+const CustomButtom = styled(Button)`
+  width: 90%;
+  font-weight: 600;
+  font-size: 24px;
+`;
 
+const FormContainerData = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 40px;
+`;
 
+const HeaderContainer = styled.div`
+  margin: auto;
+  max-width: calc(1127px + 2rem);
+`;
+
+export async function loader({ params }: LoaderArgs) {
+  const queryClient = new QueryClient();
+  const id = params?.id ?? "";
+  await queryClient.prefetchQuery(["coin/history", id], () =>
+    getHistoryCoinFn({ id })
+  );
+  return json({ dehydratedState: dehydrate(queryClient) });
+}
+
+export const action = async ({ request }: ActionArgs) => {
+  const form = await request.formData();
+  const count = form.get("count");
+  // const price = form.get("price");
+  const fields = { count };
+  return fields;
+};
 
 const CryptoDetail = (): ReactElement => {
-    const { id } = useParams<TParams>();
-    const { data: initData } = useGetHistoryCoin({ id: id ?? "" });
-    const { showToast, ToastContainer } = useToast();
+  const { id } = useParams<TParams>();
+  const { data: initData } = useGetHistoryCoin({ id: id ?? "" });
+  const { data: coin } = useGetCoin({ id: id ?? "" });
+  const { showToast, ToastContainer } = useToast();
+  // const actionData = useActionData<typeof action>();
+  // useEffect(() => {
+  //     console.log(actionData)
+  // }, [actionData])
 
-    // const handleShowToast = () => {
-    //     showToast('success', 'Toast tester');
-    // };
-    const data = useMemo(() => {
+  const [countValue, setCountValue] = useState(0);
+  const dataChart = useMemo(() => {
+    return {
+      labels: initData?.data.map((el) => convertTimestampToDate(el.time)),
+      datasets: [
+        {
+          fill: true,
+          data: initData?.data.map((el) => el.priceUsd),
+          borderColor: comparisonPrice(
+            initData!?.data[0].priceUsd,
+            initData!?.data[initData?.data.length - 1].priceUsd
+          )
+            ? "rgb(24, 198, 131)"
+            : "red",
+          backgroundColor: comparisonPrice(
+            initData!?.data[0].priceUsd,
+            initData!?.data[initData?.data.length - 1].priceUsd
+          )
+            ? "rgb(24, 198, 131, 0.4)"
+            : "rgb(255,0,0, 0.4)",
+        },
+      ],
+    };
+  }, [initData]);
 
-        return {
-            labels: initData?.data.map((el) => convertTimestampToDate(el.time)),
-            datasets: [
-                {
-                    fill: true,
-                    data: initData?.data.map((el) => el.priceUsd),
-                    borderColor: "rgb(53, 162, 235)",
-                    backgroundColor: "rgba(53, 162, 235, 0.5)",
-                },
-            ],
-        };
-    }, [initData]);
-    return (
-        <Layout>
-            <CryptoHeader>CryptoDetail</CryptoHeader>
-            <Container>
-                <SubContainer>
-                    <ContainerInfo>
-                        <HistoryTitle>
-                            История с {convertTimestampToDate(initData?.data[0].time ?? null)}{" "}
-                            по{" "}
-                            {convertTimestampToDate(
-                                initData?.data[initData?.data.length - 1].time ?? null
-                            )}
-                        </HistoryTitle>
-                        <Line options={options} data={data} />
-                    </ContainerInfo>
-                    <ContainerControl>
-                        <TitleContainer>Добавить в портфель</TitleContainer>
-                        <div>
-                            <InputContainer>
-                                <InputContainetText>
-                                    Количество
-                                </InputContainetText>
-                                <Input placeholder="0" type="number" inputMode="decimal" autoComplete="off" />
-                            </InputContainer>
-                            <InputContainer>
-                                <InputContainetText>
-                                    Итоговая стоимость
-                                </InputContainetText>
-                                <Input placeholder="0" type="number" inputMode="decimal" autoComplete="off" />
-                            </InputContainer>
-                        </div>
-                        <ButtonContainer><Button>Добавить</Button></ButtonContainer>
-                    </ContainerControl>
-                </SubContainer>
-            </Container>
-            {ToastContainer}
-        </Layout>
-    );
+  const handleCount = (number: any) => {
+    setCountValue(number.target.value * 2);
+  };
+
+  return (
+    <Layout>
+      <CryptoHeader>
+        <HeaderContainer>CryptoDetail</HeaderContainer>
+      </CryptoHeader>
+      <Container>
+        <SubContainer>
+          <ContainerInfo>
+            <HistoryTitle>
+              История с {convertTimestampToDate(initData?.data[0].time ?? null)}{" "}
+              по{" "}
+              {convertTimestampToDate(
+                initData?.data[initData?.data.length - 1].time ?? null
+              )}
+            </HistoryTitle>
+            <Line options={options} data={dataChart} />
+          </ContainerInfo>
+          <ContainerControl>
+            <div className="control-wrapper">
+              <TitleContainer>Добавить в портфель</TitleContainer>
+              <CustomForm method="post">
+                <FormContainerData>
+                  <InputContainer>
+                    <InputContainetText>Количество</InputContainetText>
+                    <Input
+                      placeholder="0"
+                      type="number"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      name="count"
+                      onChange={handleCount}
+                    />
+                  </InputContainer>
+                  <InputContainer>
+                    <InputContainetText>Итоговая стоимость</InputContainetText>
+                    <Input disabled={true} value={countValue + "$"} />
+                  </InputContainer>
+                </FormContainerData>
+                <ButtonContainer>
+                  <CustomButtom variant="succsess" type="submit">
+                    Добавить
+                  </CustomButtom>
+                </ButtonContainer>
+              </CustomForm>
+            </div>
+          </ContainerControl>
+        </SubContainer>
+      </Container>
+      {ToastContainer}
+    </Layout>
+  );
 };
 
 export default CryptoDetail;

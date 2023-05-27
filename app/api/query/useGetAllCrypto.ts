@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import request from "../utils";
+import { ICoin } from "./useGetOneCoin";
 
 export interface CoinCapAssetsResponse {
-    data: Array<Crypto>;
+    data: Array<ICoin>;
     timestamp: number;
 }
 
 export interface MyPortfolio {
     data: Array<{
-        crypto: Crypto,
+        crypto: ICoin,
         count: number
     }>
 }
@@ -18,7 +19,6 @@ export type TCryptoState = "all" | "my" | "popular"
 
 export interface IUseGetMeQueryProps {
     state: TCryptoState
-    // initialData?: any
 }
 
 

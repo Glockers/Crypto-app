@@ -6,7 +6,6 @@ export const meta: V2_MetaFunction = () => {
   return [{ title: "Error" }];
 };
 
-
 const NotFoundContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,12 +15,10 @@ const NotFoundContainer = styled.div`
   text-align: center;
 `;
 
-
 const Layout = styled.div`
   overflow: hidden;
   min-height: 100vh;
 `;
-
 
 const NotFoundTitle = styled.h1`
   font-size: 3rem;
@@ -47,7 +44,6 @@ const NotFoundButton = styled.button`
   }
 `;
 
-
 const ErrorPage = (): ReactElement => {
   const navigate = useNavigate();
 
@@ -55,11 +51,15 @@ const ErrorPage = (): ReactElement => {
     <Layout>
       <NotFoundContainer>
         <NotFoundTitle>Страница не найдена</NotFoundTitle>
-        <NotFoundText>К сожалению, запрашиваемая страница не существует.</NotFoundText>
-        <NotFoundButton onClick={event => navigate(-1)}>Вернуться на назад</NotFoundButton>
+        <NotFoundText>
+          К сожалению, запрашиваемая страница не существует.
+        </NotFoundText>
+        <NotFoundButton onClick={(event) => navigate(-1)}>
+          Вернуться на назад
+        </NotFoundButton>
       </NotFoundContainer>
     </Layout>
-  )
-}
+  );
+};
 
 export default ErrorPage;
