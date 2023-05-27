@@ -1,6 +1,11 @@
-import { useNavigate } from "@remix-run/react";
+import { V2_MetaFunction, useNavigate } from "@remix-run/react";
 import { ReactElement } from "react";
 import { styled } from "styled-components";
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Error" }];
+};
+
 
 const NotFoundContainer = styled.div`
   display: flex;
@@ -44,17 +49,17 @@ const NotFoundButton = styled.button`
 
 
 const ErrorPage = (): ReactElement => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <Layout>
-            <NotFoundContainer>
-                <NotFoundTitle>Страница не найдена</NotFoundTitle>
-                <NotFoundText>К сожалению, запрашиваемая страница не существует.</NotFoundText>
-                <NotFoundButton onClick={event => navigate(-1)}>Вернуться на назад</NotFoundButton>
-            </NotFoundContainer>
-        </Layout>
-    )
+  return (
+    <Layout>
+      <NotFoundContainer>
+        <NotFoundTitle>Страница не найдена</NotFoundTitle>
+        <NotFoundText>К сожалению, запрашиваемая страница не существует.</NotFoundText>
+        <NotFoundButton onClick={event => navigate(-1)}>Вернуться на назад</NotFoundButton>
+      </NotFoundContainer>
+    </Layout>
+  )
 }
 
 export default ErrorPage;

@@ -11,7 +11,15 @@ import {
     Tooltip,
     Filler,
     Legend,
+    ChartOptions,
 } from 'chart.js';
+import { V2_MetaArgs, V2_MetaFunction } from "@remix-run/node";
+
+
+export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
+    const param = args.params
+    return [{ title: `About ${param.id}` }];
+};
 
 
 const Layout = styled.div`
@@ -61,14 +69,23 @@ ChartJS.register(
     Legend
 );
 
-const options = {
+const options: ChartOptions<"line"> = {
     responsive: true,
     plugins: {
         legend: {
-            position: 'top' as const,
+            // position: 'top' as const,
+            display: false
         },
     },
+    scales: {
+        x: {
+            grid: {
+                display: false
+            }
+        },
+    }
 };
+
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 const data = {
@@ -83,7 +100,10 @@ const data = {
     ],
 };
 
+
+
 const CryptoDetail = (): ReactElement => {
+
     return (
         <Layout>
             <CryptoHeader>CryptoDetail</CryptoHeader>

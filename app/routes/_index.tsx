@@ -1,23 +1,17 @@
-import { ErrorBoundaryComponent } from "@remix-run/node";
-import { Link, NavLink, useCatch, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import { V2_MetaFunction } from "@remix-run/node";
+import { Link, } from "@remix-run/react";
+import styled from "styled-components";
 import {
-  CoinCapAssetsResponse,
   useGetAllCrypto,
 } from "~/api/query/useGetAllCrypto";
-import request from "~/api/utils";
 import Button from "~/components/Button";
-import ModalAddCrypto from "~/components/CustomModal/ModalAdd";
-import Modal from "~/components/Modal";
-import Pagination from "~/components/Pagination";
 import { Spinner } from "~/components/Spinner";
 import { ITableColumns, Table } from "~/components/Table";
 import { converToProcent, convertToNormalNumber, getJSXElementProcent } from "~/utils/convertor";
 
-// export const meta: V2_MetaFunction = () => {
-//   return [{ title: "New Remix App" }];
-// };
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Main" }];
+};
 
 const Container = styled.div`
   overflow: hidden;

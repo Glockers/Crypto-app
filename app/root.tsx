@@ -43,6 +43,7 @@ function Document({ children, title }: any) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
         <title>{title ? title : "Home page"}</title>
         <Links />
         {typeof document === "undefined" ? "__STYLES__" : null}
