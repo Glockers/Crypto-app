@@ -20,7 +20,8 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "*"
+    "styled-components": "*",
+    "use-dehydrated-state": "^0.1.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.16.1",

@@ -1,4 +1,3 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
@@ -10,9 +9,9 @@ import {
 } from "@remix-run/react";
 import styles from "~/styles/global.css";
 import Layout from "~/components/Layout";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import Header from "~/components/Header";
-
+import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useDehydratedState } from 'use-dehydrated-state'
+import { useState } from "react";
 
 export const links: LinksFunction = () => {
   return styles ? [
@@ -24,16 +23,20 @@ export const links: LinksFunction = () => {
 };
 
 
-const queryClient = new QueryClient()
+// const queryClient = new QueryClient()
 export default function App() {
+  const [queryClient] = useState(() => new QueryClient())
+  const dehydratedState = useDehydratedState()
   return (
     <Document>
       <QueryClientProvider client={queryClient}>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <Hydrate state={dehydratedState}>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </Hydrate>
       </QueryClientProvider>
-    </Document>
+    </Document >
   );
 }
 

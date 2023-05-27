@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import request from "../utils";
-import { useEffect, useState } from "react";
 
 export interface CoinCapAssetsResponse {
     data: Array<Crypto>;
@@ -17,16 +16,13 @@ export interface MyPortfolio {
 
 export type TCryptoState = "all" | "my" | "popular"
 
-interface IUseGetMeQueryProps {
+export interface IUseGetMeQueryProps {
     state: TCryptoState
-    search?: string;
-    limit?: string;
+    // initialData?: any
 }
 
 
-const queryFn = async ({
-    search,
-    limit,
+export const getAllCoinsFn = async ({
     state
 }: IUseGetMeQueryProps) => {
     if (state === "my") {
@@ -57,8 +53,9 @@ export const useGetAllCrypto = (props: IUseGetMeQueryProps) => {
     const { data, isLoading, error, isSuccess, } = useQuery<CoinCapAssetsResponse, AxiosError>(
         {
             queryKey: ["cryptos", props.state],
-            queryFn: () => queryFn(props),
+            queryFn: () => getAllCoinsFn(props),
             refetchInterval: 10000,
+            // initialData: props.initialData
         }
     );
 

@@ -1,7 +1,11 @@
-import { V2_MetaFunction } from "@remix-run/node";
-import { Link, } from "@remix-run/react";
+import { V2_MetaFunction, json } from "@remix-run/node";
+import { Link, useLoaderData, } from "@remix-run/react";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
 import styled from "styled-components";
 import {
+  IUseGetMeQueryProps,
+  getAllCoinsFn,
   useGetAllCrypto,
 } from "~/api/query/useGetAllCrypto";
 import Button from "~/components/Button";
@@ -87,30 +91,31 @@ const columns: ITableColumns<Crypto>[] = [
   },
 ];
 
+
+export async function loader() {
+  // const coins = await getAllCoinsFn({ state: "all" })
+  // return json({ coins })
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(["cryptos", "all"], () => getAllCoinsFn({ state: "all" }))
+  return json({ dehydratedState: dehydrate(queryClient) })
+}
+
 export default function Index() {
-  // const data = useLoaderData<typeof loader>();
   const { data, isLoading } = useGetAllCrypto({ state: "all" });
-  // const [modalOpen, setModalOpen] = useState(false);
-  // const handleOpenModal = () => {
-  //   setModalOpen(true);
-  // };
-
-  // const handleCloseModal = () => {
-  //   setModalOpen(false);
-  // };
-
   return (
     <Container>
       <Text>Страница криптовалют</Text>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <Table<Crypto>
-          dataSource={data?.data ? data.data : []}
-          columns={columns}
-          countElementOnPage={10}
-        />
-      )}
+      <Suspense fallback={<Spinner />}>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <Table<Crypto>
+            dataSource={data?.data ? data.data : []}
+            columns={columns}
+            countElementOnPage={10}
+          />
+        )}
+      </Suspense>
     </Container>
   );
 }
