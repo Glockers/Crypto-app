@@ -72,15 +72,15 @@ const SupplyContainer = styled.div`
     flex-direction: column;
     padding: 20px;
     color: white;
-  }
 
-  .sub-title {
-    font-size: 2rem;
-  }
+    .sub-title {
+      font-size: 2rem;
+    }
 
-  .sub-data {
-    font-size: 1.5rem;
-    font-weight: 600;
+    .sub-data {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
   }
 `;
 

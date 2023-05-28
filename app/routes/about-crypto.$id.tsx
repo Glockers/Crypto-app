@@ -9,7 +9,7 @@ import {
 import { getHistoryCoinFn } from "~/api/query/useGetCryptoHistory";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import styled from "styled-components";
-import { CoinContent, CointTitle } from "~/pages";
+import { CoinContent, CointTitle, RoutingComponent } from "~/pages";
 import { getCoinFn } from "~/api/query/useGetOneCoin";
 
 export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
@@ -44,6 +44,7 @@ const CryptoDetail = (): ReactElement => {
   return (
     <Layout>
       <CointTitle />
+      <RoutingComponent />
       <CoinContent />
     </Layout>
   );

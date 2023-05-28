@@ -40,6 +40,7 @@ export const useGetCoin = ({ id }: ICoinProps) => {
         {
             queryKey: ["coin", id],
             queryFn: () => getCoinFn({ id }),
+            refetchInterval: 1000
         }
     );
     return { data, isLoading: isLoading, error, isSuccess };

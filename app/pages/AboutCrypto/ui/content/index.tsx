@@ -7,13 +7,14 @@ import { SmartText } from "~/components/Text";
 import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
 import { useGetCoin } from "~/api/query/useGetOneCoin";
+import { convertToNormalNumber } from "~/utils";
 
 const Container = styled.div`
   padding: 1rem;
 `;
 
 const SubContainer = styled.div`
-  width: 1127px;
+  max-width: 1127px;
   margin-left: auto !important;
   margin-right: auto !important;
 
@@ -115,12 +116,20 @@ export function CoinContent(): ReactElement {
   const { data: initData } = useGetHistoryCoin({ id: id ?? "" });
   const [countValue, setCountValue] = useState(0);
   const { data: coin } = useGetCoin({ id: id ?? "" });
+  const [count, setCount] = useState(0);
 
-  // useEffect(() => console.log(coin), [coin]);
+  useEffect(
+    () =>
+      setCountValue((prevValue) => count * (coin?.data.priceUsd || prevValue)),
+    [coin?.data.priceUsd, count]
+  );
 
-  const handleCount = useCallback((number: any) => {
-    setCountValue(number.target.value * 2);
-  }, []);
+  const handleCount = useCallback(
+    (number: any) => {
+      setCount(number.target.value);
+    },
+    [coin!.data.priceUsd]
+  );
 
   return (
     <Container>
@@ -162,7 +171,10 @@ export function CoinContent(): ReactElement {
                 </InputContainer>
                 <InputContainer>
                   <InputContainetText>Итоговая стоимость</InputContainetText>
-                  <Input disabled={true} value={countValue + "$"} />
+                  <Input
+                    disabled={true}
+                    value={convertToNormalNumber(countValue) + "$"}
+                  />
                 </InputContainer>
               </FormContainerData>
               <ButtonContainer>
