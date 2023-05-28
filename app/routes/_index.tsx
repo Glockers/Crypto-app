@@ -12,7 +12,7 @@ import {
   converToProcent,
   convertToNormalNumber,
   getJSXElementProcent,
-} from "~/utils/convertor";
+} from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Main" }];
