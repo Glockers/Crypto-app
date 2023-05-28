@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactElement } from "react";
 import styled from "styled-components";
 
 const PaginationWrapper = styled.div`
@@ -27,7 +27,7 @@ const Pagination: FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-}) => {
+}): ReactElement => {
   const renderPageButtons = () => {
     const buttons = [];
     for (let i = 1; i <= totalPages; i++) {

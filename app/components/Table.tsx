@@ -1,7 +1,6 @@
 import { ReactElement, useState } from "react";
 import { styled } from "styled-components";
 import Pagination from "./Pagination";
-import { useNavigate } from "@remix-run/react";
 
 export interface ITableColumns<T> {
   title: string;
@@ -40,12 +39,11 @@ export const Table = <T extends { id: string | number }>({
   columns,
   countElementOnPage,
   dataSource,
-}: ITableProps<T>) => {
+}: ITableProps<T>): ReactElement => {
   const [currentPage, setCurrentPage] = useState(1);
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  const navigate = useNavigate();
   return (
     <>
       <StyledTable>
@@ -63,7 +61,6 @@ export const Table = <T extends { id: string | number }>({
               countElementOnPage * currentPage
             )
             .map((row, index) => (
-              // onClick={() => navigate(`/about-crypto/${row.id}`)}
               <tr key={index}>
                 {columns.map((column, colIndex) => (
                   <td key={colIndex}>

@@ -11,6 +11,8 @@ export interface ICoin {
     changePercent24Hr: number;
     priceUsd: number;
     img?: string;
+    maxSupply: string;
+    supply: string;
 }
 
 

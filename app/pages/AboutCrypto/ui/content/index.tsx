@@ -1,11 +1,12 @@
 import { Form, useParams } from "@remix-run/react";
-import { ReactElement, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { useGetHistoryCoin } from "~/api/query/useGetCryptoHistory";
 import Button from "~/components/Button";
 import { SmartText } from "~/components/Text";
 import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
+import { useGetCoin } from "~/api/query/useGetOneCoin";
 
 const Container = styled.div`
   padding: 1rem;
@@ -72,7 +73,6 @@ const ButtonContainer = styled.div`
 `;
 
 const HistoryTitle = styled(SmartText)`
-  text-align: center;
   font-size: 2rem;
   margin-bottom: 30px;
 `;
@@ -94,6 +94,18 @@ const FormContainerData = styled.div`
   margin-bottom: 40px;
 `;
 
+const NameCoinCointainer = styled.div`
+  display: flex;
+  align-items: center;
+  .img {
+    margin-left: 40px;
+  }
+  .name {
+    margin-right: 20px;
+    margin-left: 10px;
+  }
+`;
+
 type TParams = {
   id: string;
 };
@@ -102,21 +114,33 @@ export function CoinContent(): ReactElement {
   const { id } = useParams<TParams>();
   const { data: initData } = useGetHistoryCoin({ id: id ?? "" });
   const [countValue, setCountValue] = useState(0);
+  const { data: coin } = useGetCoin({ id: id ?? "" });
 
-  const handleCount = (number: any) => {
+  // useEffect(() => console.log(coin), [coin]);
+
+  const handleCount = useCallback((number: any) => {
     setCountValue(number.target.value * 2);
-  };
+  }, []);
 
   return (
     <Container>
       <SubContainer>
         <ContainerInfo>
           <HistoryTitle>
-            История с {convertTimestampToDate(initData?.data[0].time ?? null)}{" "}
-            по{" "}
-            {convertTimestampToDate(
-              initData?.data[initData?.data.length - 1].time ?? null
-            )}
+            <NameCoinCointainer>
+              <img className="img" src={coin?.data.img} alt="symbol" />
+              <div className="name">
+                <span>
+                  {coin?.data.name}({coin?.data.symbol})
+                </span>
+              </div>
+              <div>
+                {convertTimestampToDate(initData?.data[0].time ?? null)} по{" "}
+                {convertTimestampToDate(
+                  initData?.data[initData?.data.length - 1].time ?? null
+                )}
+              </div>
+            </NameCoinCointainer>
           </HistoryTitle>
           <HistoryChart initData={initData!} />
         </ContainerInfo>

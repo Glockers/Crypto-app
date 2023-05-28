@@ -19,7 +19,7 @@ export function CointTable(): ReactElement {
         <Spinner />
       ) : (
         <Table<ICoin>
-          dataSource={data?.data ? data.data : []}
+          dataSource={data!?.data}
           columns={columns}
           countElementOnPage={10}
         />

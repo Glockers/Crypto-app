@@ -10,6 +10,7 @@ import { getHistoryCoinFn } from "~/api/query/useGetCryptoHistory";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import styled from "styled-components";
 import { CoinContent, CointTitle } from "~/pages";
+import { getCoinFn } from "~/api/query/useGetOneCoin";
 
 export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
   const param = args.params;
@@ -22,6 +23,8 @@ export async function loader({ params }: LoaderArgs) {
   await queryClient.prefetchQuery(["coin/history", id], () =>
     getHistoryCoinFn({ id })
   );
+
+  await queryClient.prefetchQuery(["coin", id], () => getCoinFn({ id }));
   return json({ dehydratedState: dehydrate(queryClient) });
 }
 
