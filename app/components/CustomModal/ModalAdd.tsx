@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Modal from "../Modal"
+import Modal from "../Modal";
 import { styled } from "styled-components";
 import Button from "../Button";
-
 
 const InputContainer = styled.div`
   margin-bottom: 10px;
@@ -19,60 +18,56 @@ const Input = styled.input`
 `;
 
 const ControlWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const ModalAddCrypto = () => {
-    const [quantity, setQuantity] = useState('');
-    const [modalOpen, setModalOpen] = useState(false);
+  const [quantity, setQuantity] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
-    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuantity(e.target.value);
-    };
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(e.target.value);
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('Submitted quantity:', quantity);
-        handleCloseModal();
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Submitted quantity:", quantity);
+    handleCloseModal();
+  };
 
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
-    const handleOpenModal = () => {
-        setModalOpen(true);
-    };
+  if (!modalOpen) return null;
+  return (
+    <>
+      <button onClick={handleOpenModal}>Open Modal</button>
+      <Modal>
+        <h2> Введите количество </h2>
+        <form onSubmit={handleSubmit}>
+          <InputContainer>
+            <Label>Количество:</Label>
+            <Input
+              type="number"
+              step="0.01"
+              value={quantity}
+              onChange={handleQuantityChange}
+            />
+          </InputContainer>
+          <ControlWrapper>
+            <Button type="submit">Добавить</Button>
+            <Button onClick={handleCloseModal}>Отменить</Button>
+          </ControlWrapper>
+        </form>
+      </Modal>
+    </>
+  );
+};
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
-
-    if (!modalOpen) return null;
-    return (
-        <>
-            <button onClick={handleOpenModal}>Open Modal</button>
-            <Modal >
-                <h2> Введите количество </h2>
-                <form onSubmit={handleSubmit}>
-                    <InputContainer>
-                        <Label>Количество:</Label>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={quantity}
-                            onChange={handleQuantityChange}
-                        />
-                    </InputContainer>
-                    <ControlWrapper>
-                        <Button type="submit">Добавить</Button>
-                        <Button onClick={handleCloseModal}>Отменить</Button>
-                    </ControlWrapper>
-                </form>
-
-            </Modal>
-        </>
-
-    )
-}
-
-export default ModalAddCrypto
+export default ModalAddCrypto;

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import styled from "styled-components";
 import profileImage from "../../public/user-profile.svg";
 import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
@@ -68,10 +68,6 @@ const Header = (): ReactElement => {
   const [myMoney, setMyMoney] = useState(134.32);
   const [cost, setCost] = useState(2.38);
   const { data } = useGetAllCrypto({ state: "popular" });
-
-  // useEffect(() => {
-  //   axios.get(`https://api.coincap.io/v2/assets`).then(el => console.log("test", el.data))
-  // })
 
   return (
     <HeaderStyle>

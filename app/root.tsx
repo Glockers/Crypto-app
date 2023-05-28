@@ -9,24 +9,29 @@ import {
 } from "@remix-run/react";
 import styles from "~/styles/global.css";
 import Layout from "~/components/Layout";
-import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useDehydratedState } from 'use-dehydrated-state'
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { useDehydratedState } from "use-dehydrated-state";
 import { useState } from "react";
 
 export const links: LinksFunction = () => {
-  return styles ? [
-    {
-      rel: "stylesheet",
-      href: styles,
-    },
-  ] : []
+  return styles
+    ? [
+        {
+          rel: "stylesheet",
+          href: styles,
+        },
+      ]
+    : [];
 };
-
 
 // const queryClient = new QueryClient()
 export default function App() {
-  const [queryClient] = useState(() => new QueryClient())
-  const dehydratedState = useDehydratedState()
+  const [queryClient] = useState(() => new QueryClient());
+  const dehydratedState = useDehydratedState();
   return (
     <Document>
       <QueryClientProvider client={queryClient}>
@@ -36,7 +41,7 @@ export default function App() {
           </Layout>
         </Hydrate>
       </QueryClientProvider>
-    </Document >
+    </Document>
   );
 }
 
@@ -50,14 +55,13 @@ function Document({ children, title }: any) {
         <title>{title ? title : "Home page"}</title>
         <Links />
         {typeof document === "undefined" ? "__STYLES__" : null}
-
       </head>
       <body>
         {children}
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
+        {process.env.NODE_ENV === "development" ? <LiveReload /> : null}
       </body>
     </html>
-  )
+  );
 }

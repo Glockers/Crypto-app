@@ -1,5 +1,5 @@
 import { TUnixTimestamp } from "~/utils/convertor/convertor.models";
-import { client } from "../utils";
+import { api } from "../utils";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
@@ -27,7 +27,7 @@ interface ICoinResult {
 export const getCoinFn = async ({
     id,
 }: ICoinProps): Promise<ICoinResult> => {
-    const response = await client.get<ICoinResult>(`https://api.coincap.io/v2/assets/${id}`)
+    const response = await api.get<ICoinResult>(`/assets/${id}`)
     response.data.data = { ...response.data.data, img: `https://assets.coincap.io/assets/icons/${(response.data.data.symbol).toLowerCase()}@2x.png` }
     return response.data
 }

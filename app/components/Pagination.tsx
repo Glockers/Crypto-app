@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import { FC } from "react";
+import styled from "styled-components";
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const PaginationWrapper = styled.div`
 const PageButton = styled.button<{ isActive: boolean }>`
   padding: 8px 12px;
   margin: 0 5px;
-  background-color: ${(props) => (props.isActive ? '#333' : '#ccc')};
+  background-color: ${(props) => (props.isActive ? "#333" : "#ccc")};
   color: #fff;
   border: none;
   cursor: pointer;
@@ -23,7 +23,7 @@ interface PaginationProps {
   onPageChange: (pageNumber: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const Pagination: FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,

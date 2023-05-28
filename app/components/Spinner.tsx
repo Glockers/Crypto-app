@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import styled, { keyframes } from "styled-components";
 
 const spinAnimation = keyframes`
@@ -25,7 +26,7 @@ const SpinnerStyle = styled.div`
   animation: ${spinAnimation} 0.8s linear infinite;
 `;
 
-export const Spinner = () => {
+export const Spinner = (): ReactElement => {
   return (
     <SpinnerContainer>
       <SpinnerStyle />

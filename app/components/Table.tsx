@@ -3,14 +3,15 @@ import { styled } from "styled-components";
 import Pagination from "./Pagination";
 import { useNavigate } from "@remix-run/react";
 
-
 export interface ITableColumns<T> {
-    title: string; dataIndex: keyof T, render?: (record: T) => {}
+  title: string;
+  dataIndex: keyof T;
+  render?: (record: T) => {};
 }
 interface ITableProps<T> {
-    dataSource: T[];
-    columns: ITableColumns<T>[];
-    countElementOnPage: number;
+  dataSource: T[];
+  columns: ITableColumns<T>[];
+  countElementOnPage: number;
 }
 
 const StyledTable = styled.table`
@@ -33,48 +34,55 @@ const StyledTable = styled.table`
     color: rgba(0, 0, 0, 0.95) !important;
     cursor: pointer;
   }
-
 `;
 
-export const Table = <T extends { id: string | number }>({ columns, countElementOnPage, dataSource }: ITableProps<T>) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const handlePageChange = (pageNumber: number) => {
-        setCurrentPage(pageNumber);
-    };
-    const navigate = useNavigate();
-    return (
-        <>
-            <StyledTable>
-                <thead>
-                    <tr>
-                        {columns.map((column, index) => (
-                            <th key={index}>{column.title}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {dataSource
-                        .slice(
-                            countElementOnPage * currentPage - countElementOnPage,
-                            countElementOnPage * currentPage
-                        )
-                        .map((row, index) => (
-                            // onClick={() => navigate(`/about-crypto/${row.id}`)}
-                            <tr key={index} >
-                                {columns.map((column, colIndex) => (
-                                    <td key={colIndex}>{column?.render ? column?.render(row) as any : row[column.dataIndex] as any}</td>
-                                ))}
-                            </tr>
-                        ))}
-                </tbody>
-            </StyledTable>
-            <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(
-                    dataSource ? dataSource.length / countElementOnPage : 1
-                )} // Общее количество страниц
-                onPageChange={handlePageChange}
-            />
-        </>
-    );
+export const Table = <T extends { id: string | number }>({
+  columns,
+  countElementOnPage,
+  dataSource,
+}: ITableProps<T>) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+  const navigate = useNavigate();
+  return (
+    <>
+      <StyledTable>
+        <thead>
+          <tr>
+            {columns.map((column, index) => (
+              <th key={index}>{column.title}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dataSource
+            .slice(
+              countElementOnPage * currentPage - countElementOnPage,
+              countElementOnPage * currentPage
+            )
+            .map((row, index) => (
+              // onClick={() => navigate(`/about-crypto/${row.id}`)}
+              <tr key={index}>
+                {columns.map((column, colIndex) => (
+                  <td key={colIndex}>
+                    {column?.render
+                      ? (column?.render(row) as any)
+                      : (row[column.dataIndex] as any)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+        </tbody>
+      </StyledTable>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(
+          dataSource ? dataSource.length / countElementOnPage : 1
+        )} // Общее количество страниц
+        onPageChange={handlePageChange}
+      />
+    </>
+  );
 };

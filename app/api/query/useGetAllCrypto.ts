@@ -55,7 +55,6 @@ export const useGetAllCrypto = (props: IUseGetMeQueryProps) => {
             queryKey: ["cryptos", props.state],
             queryFn: () => getAllCoinsFn(props),
             refetchInterval: 10000,
-            // initialData: props.initialData
         }
     );
 

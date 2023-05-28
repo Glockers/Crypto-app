@@ -118,7 +118,7 @@ export function CoinContent(): ReactElement {
               initData?.data[initData?.data.length - 1].time ?? null
             )}
           </HistoryTitle>
-          <HistoryChart />
+          <HistoryChart initData={initData!} />
         </ContainerInfo>
         <ContainerControl>
           <div className="control-wrapper">

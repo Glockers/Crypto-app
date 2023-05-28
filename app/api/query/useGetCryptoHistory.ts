@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { client } from "../utils";
+import { api } from "../utils";
 import { TUnixTimestamp } from "~/utils/convertor/convertor.models";
 
 
@@ -26,7 +26,7 @@ export const getHistoryCoinFn = async ({
     startDate.setMonth(startDate.getMonth() - 1);
     const timeStampStartDate = startDate.getTime()
 
-    const response = await client.get<IHistoryCrypto>(`https://api.coincap.io/v2/assets/${id}/history?interval=d1&start=${timeStampStartDate}&end=${currentDate}`)
+    const response = await api.get<IHistoryCrypto>(`https://api.coincap.io/v2/assets/${id}/history?interval=d1&start=${timeStampStartDate}&end=${currentDate}`)
 
     return response.data
 }

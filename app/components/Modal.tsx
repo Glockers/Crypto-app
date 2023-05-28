@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Button from './Button';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Button from "./Button";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -42,14 +42,14 @@ const Input = styled.input`
 // `;
 
 const ControlWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
+  display: flex;
+  justify-content: space-between;
+`;
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  children: any
+  children: any;
 }
 
 const Modal = ({ children }: any) => {
@@ -91,7 +91,6 @@ const Modal = ({ children }: any) => {
     </ModalContainer>
   );
 };
-
 
 // const Modal = ({ children }: any) => {
 

@@ -6,14 +6,14 @@ export interface IHttpError {
 }
 
 const API_URL: string = 'https://api.coincap.io/v2/';
-export const client = axios.create({
+export const api = axios.create({
     baseURL: API_URL,
     headers: { "Content-Type": "application/json" }
 })
 
 const request = () => {
     // TODO
-    return client;
+    return api;
 };
 
 export default request;
