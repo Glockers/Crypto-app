@@ -108,7 +108,7 @@ export function CointTitle(): ReactElement {
           </span>
           <div className="price-coin-container">
             <span>
-              {convertToNormalNumber(coin!?.data.priceUsd).toLocaleString(
+              {convertToNormalNumber(coin!?.data.priceUsd)?.toLocaleString(
                 "en-US"
               ) + "$"}
             </span>
@@ -123,7 +123,7 @@ export function CointTitle(): ReactElement {
           <div className="sub-container">
             <span className="sub-title">supply</span>
             <span className="sub-data">
-              {convertToNormalNumber(Number(coin?.data.supply)).toLocaleString(
+              {convertToNormalNumber(Number(coin?.data.supply))?.toLocaleString(
                 "en-US"
               )}
             </span>
@@ -131,9 +131,11 @@ export function CointTitle(): ReactElement {
           <div className="sub-container">
             <span className="sub-title">max-supply</span>
             <span className="sub-data">
-              {convertToNormalNumber(
-                Number(coin?.data.maxSupply)
-              ).toLocaleString("en-US")}
+              {coin?.data.maxSupply
+                ? convertToNormalNumber(
+                    Number(coin!?.data.maxSupply)
+                  )?.toLocaleString("en-US")
+                : "Нет данных"}
             </span>
           </div>
         </SupplyContainer>

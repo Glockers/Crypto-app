@@ -118,11 +118,10 @@ export function CoinContent(): ReactElement {
   const { data: coin } = useGetCoin({ id: id ?? "" });
   const [count, setCount] = useState(0);
 
-  useEffect(
-    () =>
-      setCountValue((prevValue) => count * (coin?.data.priceUsd || prevValue)),
-    [coin?.data.priceUsd, count]
-  );
+  useEffect(() => {
+    // console.log(coin!?.data.maxSupply);
+    setCountValue((prevValue) => count * (coin?.data.priceUsd || prevValue));
+  }, [coin?.data.priceUsd, count]);
 
   const handleCount = useCallback(
     (number: any) => {

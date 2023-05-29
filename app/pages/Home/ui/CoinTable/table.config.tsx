@@ -58,7 +58,10 @@ export const columns: ITableColumns<ICoin>[] = [
     dataIndex: "priceUsd",
     render(record) {
       return (
-        "$" + convertToNormalNumber(record.priceUsd).toLocaleString("en-US")
+        "$" +
+        (record.priceUsd > 0.01
+          ? convertToNormalNumber(record.priceUsd).toLocaleString("en-US")
+          : record.priceUsd)
       );
     },
   },
