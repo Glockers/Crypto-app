@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import {
   ActionArgs,
   LoaderArgs,
@@ -11,6 +11,7 @@ import { QueryClient, dehydrate } from "@tanstack/react-query";
 import styled from "styled-components";
 import { CoinContent, CointTitle, RoutingComponent } from "~/pages";
 import { getCoinFn } from "~/api/query/useGetOneCoin";
+import { mutationFnAdd } from "~/api/mutation/usePortfolioMutation";
 
 export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
   const param = args.params;
@@ -28,12 +29,13 @@ export async function loader({ params }: LoaderArgs) {
   return json({ dehydratedState: dehydrate(queryClient) });
 }
 
-export const action = async ({ request }: ActionArgs) => {
-  const form = await request.formData();
-  const count = form.get("count");
-  const fields = { count };
-  return fields;
-};
+// export const action = async ({ request, params }: ActionArgs) => {
+//   const form = await request.formData();
+//   const count = form.get("count");
+//   const fields = { count };
+//   // mutationFnAdd({ count: count as any, id: "bitcoid" });
+//   return fields;
+// };
 
 const Layout = styled.div`
   overflow: hidden;

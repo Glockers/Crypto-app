@@ -1,5 +1,13 @@
 import { Form, useParams } from "@remix-run/react";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { styled } from "styled-components";
 import { useGetHistoryCoin } from "~/api/query/useGetCryptoHistory";
 import Button from "~/components/Button";
@@ -8,6 +16,8 @@ import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
 import { useGetCoin } from "~/api/query/useGetOneCoin";
 import { convertToNormalNumber } from "~/utils";
+import { mutationFnAdd } from "~/api/mutation/usePortfolioMutation";
+import useToast from "~/components/Toast";
 
 const Container = styled.div`
   padding: 1rem;
@@ -32,7 +42,7 @@ const ContainerControl = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1 1 0%;
-    height: 410px;
+    /* height: 410px; */
     border-radius: 13px;
     background: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 9px;
@@ -54,6 +64,9 @@ const InputContainer = styled.div`
   padding: 14px;
   border: 1px solid rgb(236, 239, 241);
   background: rgb(249, 249, 249);
+  .text {
+    font-size: 24px;
+  }
 `;
 
 const Input = styled.input`
@@ -114,21 +127,49 @@ type TParams = {
 export function CoinContent(): ReactElement {
   const { id } = useParams<TParams>();
   const { data: initData } = useGetHistoryCoin({ id: id ?? "" });
-  const [countValue, setCountValue] = useState(0);
   const { data: coin } = useGetCoin({ id: id ?? "" });
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>();
+  const [price, setPrice] = useState<number>();
+  const { ToastContainer, showToast } = useToast();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    // console.log(coin!?.data.maxSupply);
-    setCountValue((prevValue) => count * (coin?.data.priceUsd || prevValue));
+    setPrice((prevValue) => (count ? count * (coin?.data.priceUsd || 0) : 0));
   }, [coin?.data.priceUsd, count]);
 
+  useEffect(() => {
+    console.log(count);
+  }, [count]);
+
   const handleCount = useCallback(
-    (number: any) => {
-      setCount(number.target.value);
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (inputRef.current) {
+        let value = inputRef.current.value;
+
+        value = value.replace(/[^0-9.]/g, "");
+
+        if (isNaN(parseFloat(value))) {
+          value = "";
+        }
+
+        inputRef.current.value = value;
+        setCount(parseFloat(value));
+      }
     },
     [coin!.data.priceUsd]
   );
+
+  const handleForm = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (count && count > 0) {
+      mutationFnAdd({ count: count, id: id ?? "" });
+      showToast("success", "Криптовалюта добавлена!");
+      setCount(0);
+      inputRef!.current!.value = "";
+    } else {
+      showToast("error", "Ошибка ввода формы");
+    }
+  };
 
   return (
     <Container>
@@ -155,25 +196,23 @@ export function CoinContent(): ReactElement {
         <ContainerControl>
           <div className="control-wrapper">
             <TitleContainer>Добавить в портфель</TitleContainer>
-            <CustomForm method="post">
+            <Form method="post" onSubmit={handleForm}>
               <FormContainerData>
                 <InputContainer>
                   <InputContainetText>Количество</InputContainetText>
                   <Input
+                    ref={inputRef}
                     placeholder="0"
-                    type="number"
-                    inputMode="decimal"
-                    autoComplete="off"
-                    name="count"
+                    type="text"
+                    pattern="^[0-9]*[.,]?[0-9]*$"
                     onChange={handleCount}
                   />
                 </InputContainer>
                 <InputContainer>
                   <InputContainetText>Итоговая стоимость</InputContainetText>
-                  <Input
-                    disabled={true}
-                    value={convertToNormalNumber(countValue) + "$"}
-                  />
+                  <span className="text">
+                    {convertToNormalNumber(price || 0) + "$"}
+                  </span>
                 </InputContainer>
               </FormContainerData>
               <ButtonContainer>
@@ -181,10 +220,11 @@ export function CoinContent(): ReactElement {
                   Добавить
                 </CustomButtom>
               </ButtonContainer>
-            </CustomForm>
+            </Form>
           </div>
         </ContainerControl>
       </SubContainer>
+      {ToastContainer}
     </Container>
   );
 }

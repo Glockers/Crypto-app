@@ -1,4 +1,4 @@
-export type TStargeKey = "my-cryptos";
+export type TStargeKey = "portfolio";
 
 export const addToStorage = <T>(key: TStargeKey, data: T) => {
     localStorage.setItem(key, JSON.stringify(data));
