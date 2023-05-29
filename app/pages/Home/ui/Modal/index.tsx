@@ -11,6 +11,7 @@ import { ICoin } from "~/api/query/useGetOneCoin";
 import Button from "~/components/Button";
 import Modal from "~/components/Modal";
 import useToast from "~/components/Toast";
+import { useNotificationContext } from "~/utils/notification/NotificationContext";
 
 const Container = styled.div`
   display: flex;
@@ -62,7 +63,8 @@ export function ModalAddingCrypto({
   const [count, setCount] = useState<number>();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { addToPortfolio } = usePortfolioMutation();
-  const { ToastContainer, showToast } = useToast();
+  const { showToast } = useNotificationContext();
+
   const handleCount = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       if (inputRef.current) {
@@ -108,14 +110,13 @@ export function ModalAddingCrypto({
             onClick={() => {
               addToPortfolio({ count: count ?? 0, id: choosingData.id });
               showToast("success", "Добавлено");
-              //   setIsOpen(false);
+              setIsOpen(false);
             }}
           >
             Добавить
           </Button>
         </ControlContainer>
       </Container>
-      {ToastContainer}
     </Modal>
   );
 }

@@ -7,7 +7,7 @@ interface ToastProps {
   duration?: number;
 }
 
-interface ToastOptions {
+export interface ToastOptions {
   duration?: number;
 }
 

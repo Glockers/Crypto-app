@@ -16,7 +16,6 @@ export function CointTable(): ReactElement {
   const [isOpen, setIsOpen] = useState(false);
   const [choosingData, setChoosingData] = useState<ICoin>();
   const { columns } = useTableConfig(setIsOpen, setChoosingData);
-
   // useEffect(() => {
   //   console.log(isOpen, choosingData);
   // }, [choosingData]);

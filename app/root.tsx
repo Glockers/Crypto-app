@@ -16,6 +16,7 @@ import {
 } from "@tanstack/react-query";
 import { useDehydratedState } from "use-dehydrated-state";
 import { useState } from "react";
+import { NotificationProvider } from "./utils/notification/NotificationContext";
 
 export const links: LinksFunction = () => {
   return styles
@@ -36,9 +37,11 @@ export default function App() {
     <Document>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={dehydratedState}>
-          <Layout>
-            <Outlet />
-          </Layout>
+          <NotificationProvider>
+            <Layout>
+              <Outlet />
+            </Layout>
+          </NotificationProvider>
         </Hydrate>
       </QueryClientProvider>
     </Document>
