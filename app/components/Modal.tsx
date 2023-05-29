@@ -17,21 +17,22 @@ const ModalContainer = styled.div`
 const ModalContent = styled.div`
   background-color: white;
   padding: 20px;
+  border-radius: 10px;
 `;
 
-const InputContainer = styled.div`
-  margin-bottom: 10px;
-`;
+// const InputContainer = styled.div`
+//   margin-bottom: 10px;
+// `;
 
-const Label = styled.label`
-  display: block;
-  margin-bottom: 5px;
-`;
+// const Label = styled.label`
+// display: block;
+// margin-bottom: 5px;
+// `;
 
-const Input = styled.input`
-  padding: 5px;
-  width: 100%;
-`;
+// const Input = styled.input`
+//   padding: 5px;
+//   width: 100%;
+// `;
 
 // const Button = styled.button`
 //   padding: 10px 20px;
@@ -41,18 +42,19 @@ const Input = styled.input`
 //   cursor: pointer;
 // `;
 
-const ControlWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
+// const ControlWrapper = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+// `;
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  // onClose: () => void;
   children: any;
 }
 
-const Modal = ({ children }: any) => {
+const Modal = ({ children, isOpen }: ModalProps) => {
+  // console.log(isOpen);
   // const [quantity, setQuantity] = useState('');
 
   // const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,13 +67,14 @@ const Modal = ({ children }: any) => {
   //     onClose();
   // };
 
-  // if (!isOpen) return null;
+  if (!isOpen) return null;
 
   return (
-    <ModalContainer>
-      <ModalContent>
-        {children}
-        {/* <h2> Введите количество </h2>
+    <>
+      <ModalContainer>
+        <ModalContent>
+          {children}
+          {/* <h2> Введите количество </h2>
                 <form onSubmit={handleSubmit}>
                     <InputContainer>
                         <Label>Количество:</Label>
@@ -87,8 +90,9 @@ const Modal = ({ children }: any) => {
                         <Button onClick={onClose}>Отменить</Button>
                     </ControlWrapper>
                 </form> */}
-      </ModalContent>
-    </ModalContainer>
+        </ModalContent>
+      </ModalContainer>
+    </>
   );
 };
 

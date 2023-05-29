@@ -16,7 +16,10 @@ import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
 import { useGetCoin } from "~/api/query/useGetOneCoin";
 import { convertToNormalNumber } from "~/utils";
-import { mutationFnAdd } from "~/api/mutation/usePortfolioMutation";
+import {
+  mutationFnAdd,
+  usePortfolioMutation,
+} from "~/api/mutation/usePortfolioMutation";
 import useToast from "~/components/Toast";
 
 const Container = styled.div`
@@ -132,14 +135,11 @@ export function CoinContent(): ReactElement {
   const [price, setPrice] = useState<number>();
   const { ToastContainer, showToast } = useToast();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { addToPortfolio, isAdding } = usePortfolioMutation();
 
   useEffect(() => {
     setPrice((prevValue) => (count ? count * (coin?.data.priceUsd || 0) : 0));
   }, [coin?.data.priceUsd, count]);
-
-  useEffect(() => {
-    console.log(count);
-  }, [count]);
 
   const handleCount = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -156,13 +156,13 @@ export function CoinContent(): ReactElement {
         setCount(parseFloat(value));
       }
     },
-    [coin!.data.priceUsd]
+    [coin!.data.priceUsd, count]
   );
 
   const handleForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (count && count > 0) {
-      mutationFnAdd({ count: count, id: id ?? "" });
+      addToPortfolio({ count: count, id: id ?? "" });
       showToast("success", "Криптовалюта добавлена!");
       setCount(0);
       inputRef!.current!.value = "";

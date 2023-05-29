@@ -8,8 +8,6 @@ interface IAddProps {
     count: number
 }
 
-
-
 interface IAddResult {
     id: string,
     count: number
@@ -20,13 +18,12 @@ interface IDeleteProps {
     count: number
 }
 
-export const mutationFnAdd = async (data: IAddProps) => {
+export const mutationFnAdd = async (data: IAddProps): Promise<IAddResult[] | null> => {
     if (typeof window === 'undefined') {
         console.log("app is running on the server")
         return null;
     }
     const result = getFromStorage<IAddResult[]>("portfolio");
-    console.log(result)
     let flag = false;
     const newArray = result?.map((item) => {
         if (item.id === data.id) {
@@ -38,13 +35,13 @@ export const mutationFnAdd = async (data: IAddProps) => {
     })
 
     if (flag) {
-        console.log(newArray)
+        // console.log(newArray)
         addToStorage("portfolio", newArray)
-    } else {
-        addToStorage<IAddResult[]>("portfolio", [...result || [], data])
+        return newArray ?? []
     }
+    addToStorage<IAddResult[]>("portfolio", [...result || [], data])
+    return [...result || [], data]
 
-    return flag
 }
 
 const mutationFnRemove = async (data: any) => {
@@ -53,51 +50,23 @@ const mutationFnRemove = async (data: any) => {
 
 export const usePortfolioMutation = () => {
     const client = useQueryClient();
-    const { mutate: remove, isLoading: isRemoving } = useMutation<
+    const { mutate: removeCoin, isLoading: isRemoving } = useMutation<
         any,
         AxiosError,
         any
     >({
         mutationKey: ["portfolio"],
         mutationFn: mutationFnRemove,
-        // onSuccess(data, variables) {
-        //     const cachedData = client.getQueriesData<IGetMeResults[]>([
-        //         "/client/clients",
-        //     ]);
-
-        //     cachedData.forEach(([queryKey, results]) => {
-        //         if (!results) return;
-        //         client.setQueriesData(queryKey, () => {
-        //             return results.filter((el) => {
-        //                 return el.id !== variables.id;
-        //             });
-        //         });
-        //     });
-        // }
-
     })
 
-    const { mutate: add, isLoading: isAdding } = useMutation<
-        any,
+    const { mutate: addToPortfolio, isLoading: isAdding } = useMutation<
+        IAddResult[] | null,
         AxiosError,
-        any
+        IAddProps
     >({
         mutationKey: ["portfolio"],
         mutationFn: mutationFnAdd,
-        // onSuccess(data, variables) {
-        //     const cachedData = client.getQueriesData<IGetMeResults[]>([
-        //         "/client/clients",
-        //     ]);
-
-        //     cachedData.forEach(([queryKey, results]) => {
-        //         if (!results) return;
-        //         client.setQueriesData(queryKey, () => {
-        //             return results.filter((el) => {
-        //                 return el.id !== variables.id;
-        //             });
-        //         });
-        //     });
-        // }
-
     })
+
+    return { addToPortfolio, isAdding }
 }
