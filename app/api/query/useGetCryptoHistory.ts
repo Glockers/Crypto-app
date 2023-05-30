@@ -23,9 +23,7 @@ export const getHistoryCoinFn = async ({
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() - 1);
     const timeStampStartDate = startDate.getTime()
-
     const response = await api.get<IHistoryCrypto>(`https://api.coincap.io/v2/assets/${id}/history?interval=d1&start=${timeStampStartDate}&end=${currentDate}`)
-
     return response.data
 }
 

@@ -11,7 +11,7 @@ import { SmartText } from "../shared/Text";
 import {
   getPortfolioCurrentPriceFn,
   getPortfolioPriceFn,
-  useGetPortfolio,
+  useGetCostPortfolio,
 } from "~/api/query/useGetCostMyPortfolio";
 
 const BasicStyle = styled.div`
@@ -89,7 +89,7 @@ const Header = ({ setIsOpen }: IProps): ReactElement => {
     myMoney: money,
     isMyCurrentMoney,
     myCurrentMoney,
-  } = useGetPortfolio();
+  } = useGetCostPortfolio();
 
   useEffect(() => {
     if (money !== 0 || myCurrentMoney !== 0) {

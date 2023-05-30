@@ -19,21 +19,7 @@ export const getPortfolioPriceFn = () => {
 
 
 export const getPortfolioCurrentPriceFn = async () => {
-    // const data = getFromStorage<IPortfolioResult[]>("portfolio");
-    // const groupedData = !data ? null : Object.values(data).reduce((result, item) => {
-    //     const { id, count } = item;
-    //     const array_id = result.findIndex(element => element.id === id);
-
-    //     if (array_id < 0) {
-    //         return [...result, { id, count }]
-    //     }
-    //     else {
-    //         result[array_id].count += count
-    //         return result
-    //     }
-    // }, [] as Array<ICurrentPrice>)
-
-    const groupedData = getPortfolioFn()
+    const groupedData = await getPortfolioFn()
     if (!groupedData) return 0
 
     const groupedDataWithPrice = await Promise.all(
@@ -51,13 +37,12 @@ export const getPortfolioCurrentPriceFn = async () => {
 
 
 
-export const useGetPortfolio = () => {
+export const useGetCostPortfolio = () => {
     const { data: myMoney, isLoading: isMyMoneyLoading } = useQuery<number, AxiosError>(
         {
             queryKey: ["my-money"],
             queryFn: getPortfolioPriceFn,
             refetchInterval: 5000
-
         }
     );
 
@@ -66,7 +51,6 @@ export const useGetPortfolio = () => {
             queryKey: ["my-current-money"],
             queryFn: getPortfolioCurrentPriceFn,
             refetchInterval: 5000
-
         }
     );
     return { myMoney, isMyMoneyLoading, myCurrentMoney, isMyCurrentMoney }

@@ -15,7 +15,7 @@ export interface MyPortfolio {
     }>
 }
 
-export type TCryptoState = "all" | "my" | "popular"
+export type TCryptoState = "all" | "popular"
 
 export interface IUseGetMeQueryProps {
     state: TCryptoState
