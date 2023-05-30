@@ -3,38 +3,37 @@ import { IAddPortolioProps } from "../mutation/usePortfolioMutation";
 import { getCoinFn } from "./useGetOneCoin";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { IPortfolioHistory, getPortfolioFn } from "./useGetPortfolio";
 
-export interface IPortfolioResult extends IAddPortolioProps { }
+
+
 
 
 export const getPortfolioPriceFn = () => {
-    const result = getFromStorage<IPortfolioResult[]>("portfolio");
+    const result = getFromStorage<IPortfolioHistory[]>("portfolio");
     return result?.reduce((sum, current) => {
         return sum + current.count * current.price
     }, 0) ?? 0
 }
 
 
-interface ICurrentPrice {
-    id: string,
-    count: number
-}
 
 export const getPortfolioCurrentPriceFn = async () => {
-    const data = getFromStorage<IPortfolioResult[]>("portfolio");
-    const groupedData = !data ? null : Object.values(data).reduce((result, item) => {
-        const { id, count } = item;
-        const array_id = result.findIndex(element => element.id === id);
+    // const data = getFromStorage<IPortfolioResult[]>("portfolio");
+    // const groupedData = !data ? null : Object.values(data).reduce((result, item) => {
+    //     const { id, count } = item;
+    //     const array_id = result.findIndex(element => element.id === id);
 
-        if (array_id < 0) {
-            return [...result, { id, count }]
-        }
-        else {
-            result[array_id].count += count
-            return result
-        }
-    }, [] as Array<ICurrentPrice>)
+    //     if (array_id < 0) {
+    //         return [...result, { id, count }]
+    //     }
+    //     else {
+    //         result[array_id].count += count
+    //         return result
+    //     }
+    // }, [] as Array<ICurrentPrice>)
 
+    const groupedData = getPortfolioFn()
     if (!groupedData) return 0
 
     const groupedDataWithPrice = await Promise.all(
@@ -50,9 +49,6 @@ export const getPortfolioCurrentPriceFn = async () => {
     return calculatedPortfolio
 }
 
-export const getPortfolioFn = () => {
-
-}
 
 
 export const useGetPortfolio = () => {

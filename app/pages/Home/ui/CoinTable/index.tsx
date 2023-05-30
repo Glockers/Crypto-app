@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
 import { ICoin } from "~/api/query/useGetOneCoin";
 import { Spinner } from "~/shared/Spinner";
-import { Table } from "~/components/Table";
+import { Table } from "~/components/TableCoins";
 import { useTableConfig } from "./useTableConfig";
 import { ModalAddingCrypto } from "../Modal";
 

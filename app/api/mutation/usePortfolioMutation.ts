@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { addToStorage, getFromStorage } from "~/utils/local-storage/storage.config";
-import { IPortfolioResult } from "../query/useGetPortfolio";
+import { IPortfolioHistory } from "../query/useGetPortfolio";
 
 
 export interface IAddPortolioProps {
@@ -11,10 +11,10 @@ export interface IAddPortolioProps {
 }
 
 
-interface IDeleteProps {
-    id: string,
-    count: number
-}
+// interface IDeleteProps {
+//     id: string,
+//     count: number
+// }
 
 export const mutationFnAdd = async (data: IAddPortolioProps): Promise<IAddPortolioProps | null> => {
     if (typeof window === 'undefined') {
@@ -22,7 +22,7 @@ export const mutationFnAdd = async (data: IAddPortolioProps): Promise<IAddPortol
         return null;
     }
 
-    const result = getFromStorage<IPortfolioResult[]>("portfolio");
+    const result = getFromStorage<IPortfolioHistory[]>("portfolio");
 
     if (!result) {
         addToStorage("portfolio", [data])
@@ -34,23 +34,23 @@ export const mutationFnAdd = async (data: IAddPortolioProps): Promise<IAddPortol
     return data
 }
 
-const mutationFnRemove = async (data: any) => {
+// const mutationFnRemove = async (data: any) => {
 
-}
+// }
 
 export const usePortfolioMutation = () => {
     const client = useQueryClient();
-    const { mutate: removeCoin, isLoading: isRemoving } = useMutation<
-        any,
-        AxiosError,
-        any
-    >({
-        mutationKey: ["portfolio"],
-        mutationFn: mutationFnRemove,
-        onSuccess: (data) => {
-            client.invalidateQueries(["my-money"]);
-        }
-    })
+    // const { mutate: removeCoin, isLoading: isRemoving } = useMutation<
+    //     any,
+    //     AxiosError,
+    //     any
+    // >({
+    //     mutationKey: ["portfolio"],
+    //     mutationFn: mutationFnRemove,
+    //     onSuccess: (data) => {
+    //         client.invalidateQueries(["my-money"]);
+    //     }
+    // })
 
     const { mutate: addToPortfolio, isLoading: isAdding } = useMutation<
         IAddPortolioProps | null,

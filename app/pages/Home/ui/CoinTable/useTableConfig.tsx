@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import styled from "styled-components";
 import { ICoin } from "~/api/query/useGetOneCoin";
 import Button from "~/shared/Button";
-import { ITableColumns } from "~/components/Table";
+import { ITableColumns } from "~/components/TableCoins";
 import {
   converToProcent,
   convertToNormalNumber,

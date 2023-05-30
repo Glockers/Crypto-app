@@ -5,7 +5,7 @@ import { getAllCoinsFn } from "~/api/query/useGetAllCrypto";
 import {
   getPortfolioCurrentPriceFn,
   getPortfolioPriceFn,
-} from "~/api/query/useGetPortfolio";
+} from "~/api/query/useGetCostMyPortfolio";
 import { CointTable } from "~/pages";
 
 export const meta: V2_MetaFunction = () => {

@@ -21,14 +21,9 @@ export interface IUseGetMeQueryProps {
     state: TCryptoState
 }
 
-
 export const getAllCoinsFn = async ({
     state
 }: IUseGetMeQueryProps) => {
-    if (state === "my") {
-        // read from local storage
-    }
-
     if (state === "popular") {
         const response = await request().get<CoinCapAssetsResponse>("/assets?limit=3")
         response.data.data = response.data.data.map(elem => {

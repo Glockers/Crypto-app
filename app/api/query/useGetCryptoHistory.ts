@@ -3,7 +3,6 @@ import { AxiosError } from "axios";
 import { api } from "../utils";
 import { TUnixTimestamp } from "~/utils/convertor/convertor.models";
 
-
 export interface IHistoryCrypto {
     data: Array<{
         priceUsd: number,
@@ -12,7 +11,6 @@ export interface IHistoryCrypto {
     }>
     timestamp: TUnixTimestamp
 }
-
 
 interface IProps {
     id: string,
@@ -30,7 +28,6 @@ export const getHistoryCoinFn = async ({
 
     return response.data
 }
-
 
 export const useGetHistoryCoin = (props: IProps) => {
     const { data, isLoading, error, isSuccess, } = useQuery<IHistoryCrypto, AxiosError>(

@@ -12,7 +12,7 @@ import {
   getPortfolioCurrentPriceFn,
   getPortfolioPriceFn,
   useGetPortfolio,
-} from "~/api/query/useGetPortfolio";
+} from "~/api/query/useGetCostMyPortfolio";
 
 const BasicStyle = styled.div`
   display: flex;
