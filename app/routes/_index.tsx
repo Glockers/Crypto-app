@@ -2,10 +2,7 @@ import { V2_MetaFunction, json } from "@remix-run/node";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import styled from "styled-components";
 import { getAllCoinsFn } from "~/api/query/useGetAllCrypto";
-import {
-  getPortfolioCurrentPriceFn,
-  getPortfolioPriceFn,
-} from "~/api/query/useGetCostMyPortfolio";
+import { queryKeys } from "~/api/queryKeys";
 import { CointTable } from "~/pages";
 
 export const meta: V2_MetaFunction = () => {
@@ -24,7 +21,7 @@ const Text = styled.h1`
 
 export async function loader() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(["cryptos", "all"], () =>
+  await queryClient.prefetchQuery(queryKeys.kind_of_coins("all"), () =>
     getAllCoinsFn({ state: "all" })
   );
   return json({ dehydratedState: dehydrate(queryClient) });

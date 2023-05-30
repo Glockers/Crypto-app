@@ -10,10 +10,3 @@ export const api = axios.create({
     baseURL: API_URL,
     headers: { "Content-Type": "application/json" }
 })
-
-const request = () => {
-    // TODO
-    return api;
-};
-
-export default request;

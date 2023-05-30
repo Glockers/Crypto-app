@@ -2,6 +2,7 @@ import { TUnixTimestamp } from "~/utils/convertor/convertor.models";
 import { api } from "../utils";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { queryKeys } from "../queryKeys";
 
 export interface ICoin {
     id: string;
@@ -38,7 +39,7 @@ export const getCoinFn = async ({
 export const useGetCoin = ({ id }: ICoinProps) => {
     const { data, isLoading, error, isSuccess, } = useQuery<ICoinResult, AxiosError>(
         {
-            queryKey: ["coin", id],
+            queryKey: queryKeys.coin(id),
             queryFn: () => getCoinFn({ id }),
             refetchInterval: 1000
         }

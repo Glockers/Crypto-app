@@ -108,9 +108,12 @@ export function CointTitle(): ReactElement {
           </span>
           <div className="price-coin-container">
             <span>
-              {convertToNormalNumber(coin!?.data.priceUsd)?.toLocaleString(
-                "en-US"
-              ) + "$"}
+              {coin!?.data.priceUsd > 0.01 || coin!?.data.priceUsd < -0.01
+                ? convertToNormalNumber(coin!?.data.priceUsd)?.toLocaleString(
+                    "en-US"
+                  )
+                : coin!?.data.priceUsd}
+              $
             </span>
             <span>
               {getJSXElementProcent(

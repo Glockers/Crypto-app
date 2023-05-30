@@ -2,16 +2,18 @@ import { getFromStorage } from "~/utils/local-storage/storage.config";
 import { IAddPortolioProps } from "../mutation/usePortfolioMutation";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { queryKeys } from "~/api/queryKeys";
 
 export interface IPortfolioHistory extends IAddPortolioProps {}
 
-interface IPortfolio {
+export interface IPortfolio {
   id: string;
   count: number;
 }
 
 export const getPortfolioFn = () => {
   const data = getFromStorage<IPortfolioHistory[]>("portfolio");
+
   const groupedData = !data
     ? null
     : Object.values(data).reduce((result, item) => {
@@ -33,7 +35,7 @@ export const useGetPortfolio = () => {
     Array<IPortfolio> | null,
     AxiosError
   >({
-    queryKey: ["portfolio"],
+    queryKey: queryKeys.portfolio(),
     queryFn: () => getPortfolioFn(),
   });
   return { data, isLoading: isLoading, error, isSuccess };

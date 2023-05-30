@@ -76,6 +76,18 @@ const ProfileContainer = styled.div`
   gap: 10px;
 `;
 
+function calculateProcent(myMoney: number, difference: number) {
+  const calculatedValue = (difference / myMoney) * 100;
+  if (calculatedValue > 0.01 || calculatedValue < -0.01)
+    return converToProcent(calculatedValue);
+  else {
+    return calculatedValue;
+  }
+  // Math.fround(difference / myMoney) * 100 > 0.01
+  //   ? converToProcent((difference / myMoney) * 100)
+  //   : (difference / myMoney) * 100;
+}
+
 interface IProps {
   setIsOpen: (value: boolean) => void;
 }
@@ -84,22 +96,12 @@ const Header = ({ setIsOpen }: IProps): ReactElement => {
   const [currentMoney, setCurrentMoney] = useState(0);
   const [difference, setDifference] = useState(0);
   const { data: popularCryptos } = useGetAllCrypto({ state: "popular" });
-  const {
-    isMyMoneyLoading,
-    myMoney: money,
-    isMyCurrentMoney,
-    myCurrentMoney,
-  } = useGetCostPortfolio();
+  const { myMoney: money, myCurrentMoney } = useGetCostPortfolio();
 
   useEffect(() => {
-    if (money !== 0 || myCurrentMoney !== 0) {
-      setMyMoney(convertToNormalNumber(money ?? 0));
-      setCurrentMoney(convertToNormalNumber(myCurrentMoney ?? 0));
-      setDifference(
-        convertToNormalNumber((myCurrentMoney ?? 0) - (money ?? 0))
-      );
-    }
-    // console.log(currentMoney - myMoney, currentMoney, myMoney);
+    setMyMoney(convertToNormalNumber(money ?? 0));
+    setCurrentMoney(convertToNormalNumber(myCurrentMoney ?? 0));
+    setDifference(convertToNormalNumber((myCurrentMoney ?? 0) - (money ?? 0)));
   }, [money, myCurrentMoney]);
 
   return (
@@ -134,13 +136,11 @@ const Header = ({ setIsOpen }: IProps): ReactElement => {
               </TextCostDifferenceStyle>
             ) : (
               <TextCostDifferenceStyle>
-                {" "}
                 {difference.toLocaleString("en-US")}
               </TextCostDifferenceStyle>
             )}
-            ({converToProcent((difference / myMoney) * 100)}%)
+            <span>({myMoney && calculateProcent(myMoney, difference)}%)</span>
           </CostDifferenceStyle>
-
           <ProfileStyle onClick={() => setIsOpen(true)}>
             <img src={profileImage} alt="My Image" />
           </ProfileStyle>

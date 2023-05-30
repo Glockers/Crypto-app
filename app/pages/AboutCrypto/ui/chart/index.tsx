@@ -18,7 +18,6 @@ interface IProps {
 }
 
 export function HistoryChart({ initData }: IProps): ReactElement {
-  const { id } = useParams<TParams>();
   const dataChart = useMemo(() => {
     return {
       labels: initData?.data.map((el) => convertTimestampToDate(el.time)),

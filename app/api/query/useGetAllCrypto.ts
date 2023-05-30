@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import request from "../utils";
 import { ICoin } from "./useGetOneCoin";
+import { queryKeys } from "../queryKeys";
+import { api } from "../utils";
 
 export interface CoinCapAssetsResponse {
     data: Array<ICoin>;
@@ -25,17 +26,17 @@ export const getAllCoinsFn = async ({
     state
 }: IUseGetMeQueryProps) => {
     if (state === "popular") {
-        const response = await request().get<CoinCapAssetsResponse>("/assets?limit=3")
+        const response = await api.get<CoinCapAssetsResponse>("/assets?limit=3")
         response.data.data = response.data.data.map(elem => {
-            return { ...elem, img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
+            return { ...elem, priceUsd: Number(elem.priceUsd), img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
         })
         return response.data
     }
 
     if (state === "all") {
-        let response = await request().get<CoinCapAssetsResponse>("/assets")
+        let response = await api.get<CoinCapAssetsResponse>("/assets")
         response.data.data = response.data.data.map(elem => {
-            return { ...elem, img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
+            return { ...elem, priceUsd: Number(elem.priceUsd), img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
         })
         return response.data
     }
@@ -47,7 +48,7 @@ export const getAllCoinsFn = async ({
 export const useGetAllCrypto = (props: IUseGetMeQueryProps) => {
     const { data, isLoading, error, isSuccess, } = useQuery<CoinCapAssetsResponse, AxiosError>(
         {
-            queryKey: ["cryptos", props.state],
+            queryKey: queryKeys.kind_of_coins(props.state),
             queryFn: () => getAllCoinsFn(props),
             refetchInterval: 10000,
         }

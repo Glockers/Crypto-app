@@ -24,6 +24,14 @@ const ImageWrapper = styled.div`
   }
 `;
 
+function convertToShortNumber(number: number, significantDigits = 2) {
+  const power = Math.floor(Math.log10(Math.abs(number)));
+  const multiplier = 10 ** (power - significantDigits + 1);
+  const roundedNumber = Math.round(number / multiplier) * multiplier;
+
+  return roundedNumber;
+}
+
 export const useTableConfig = (
   setModal: Function,
   setChoosingData: Function
@@ -63,9 +71,9 @@ export const useTableConfig = (
       render(record) {
         return (
           "$" +
-          (record.priceUsd > 0.01
+          (record.priceUsd > 0.01 || record.priceUsd < -0.01
             ? convertToNormalNumber(record.priceUsd).toLocaleString("en-US")
-            : record.priceUsd)
+            : convertToShortNumber(record.priceUsd))
         );
       },
     },

@@ -12,6 +12,7 @@ import styled from "styled-components";
 import { CoinContent, CointTitle, RoutingComponent } from "~/pages";
 import { getCoinFn } from "~/api/query/useGetOneCoin";
 import { mutationFnAdd } from "~/api/mutation/usePortfolioMutation";
+import { queryKeys } from "~/api/queryKeys";
 
 export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
   const param = args.params;
@@ -21,11 +22,11 @@ export const meta: V2_MetaFunction = (args: V2_MetaArgs) => {
 export async function loader({ params }: LoaderArgs) {
   const queryClient = new QueryClient();
   const id = params?.id ?? "";
-  await queryClient.prefetchQuery(["coin/history", id], () =>
+  await queryClient.prefetchQuery(queryKeys.coin_history(id), () =>
     getHistoryCoinFn({ id })
   );
 
-  await queryClient.prefetchQuery(["coin", id], () => getCoinFn({ id }));
+  await queryClient.prefetchQuery(queryKeys.coin(id), () => getCoinFn({ id }));
   return json({ dehydratedState: dehydrate(queryClient) });
 }
 
