@@ -16,10 +16,7 @@ import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
 import { useGetCoin } from "~/api/query/useGetOneCoin";
 import { convertToNormalNumber } from "~/utils";
-import {
-  mutationFnAdd,
-  usePortfolioMutation,
-} from "~/api/mutation/usePortfolioMutation";
+import { usePortfolioMutation } from "~/api/mutation/usePortfolioMutation";
 import useToast from "~/shared/Toast";
 
 const Container = styled.div`
@@ -33,10 +30,16 @@ const SubContainer = styled.div`
 
   display: flex;
   gap: 10px;
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
 `;
 
 const ContainerInfo = styled.div`
   flex: 1 1 350px;
+  @media (max-width: 660px) {
+    flex: 0;
+  }
 `;
 
 const ContainerControl = styled.div`
@@ -53,6 +56,13 @@ const ContainerControl = styled.div`
     padding: 10px;
     max-width: 100%;
   }
+
+  @media (max-width: 660px) {
+    font-size: 32px;
+    .control-wrapper {
+      margin-top: 20px;
+    }
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -60,6 +70,10 @@ const TitleContainer = styled.div`
   font-size: 30px;
   flex: 0;
   margin-bottom: 30px;
+
+  @media (max-width: 660px) {
+    font-size: 32px;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -94,10 +108,6 @@ const HistoryTitle = styled(SmartText)`
   margin-bottom: 30px;
 `;
 
-const CustomForm = styled(Form)`
-  flex: 1;
-`;
-
 const CustomButtom = styled(Button)`
   width: 90%;
   font-weight: 600;
@@ -114,12 +124,21 @@ const FormContainerData = styled.div`
 const NameCoinCointainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   .img {
     margin-left: 40px;
   }
   .name {
     margin-right: 20px;
     margin-left: 10px;
+  }
+
+  @media (max-width: 660px) {
+    font-size: 20px;
+
+    .img {
+      margin-left: 0px;
+    }
   }
 `;
 
@@ -138,7 +157,7 @@ export function CoinContent(): ReactElement {
   const { addToPortfolio, isAdding } = usePortfolioMutation();
 
   useEffect(() => {
-    setPrice((prevValue) => (count ? count * (coin?.data.priceUsd || 0) : 0));
+    setPrice(() => (count ? count * (coin?.data.priceUsd || 0) : 0));
   }, [coin?.data.priceUsd, count]);
 
   const handleCount = useCallback(
