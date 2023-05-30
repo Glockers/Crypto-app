@@ -76,12 +76,10 @@ const ProfileContainer = styled.div`
   gap: 10px;
 `;
 
-type THeaderInfo = {
-  myMoney: number;
-  currentMoney: number;
-};
-
-const Header = (): ReactElement => {
+interface IProps {
+  setIsOpen: (value: boolean) => void;
+}
+const Header = ({ setIsOpen }: IProps): ReactElement => {
   const [myMoney, setMyMoney] = useState(0);
   const [currentMoney, setCurrentMoney] = useState(0);
   const [difference, setDifference] = useState(0);
@@ -129,18 +127,21 @@ const Header = (): ReactElement => {
         </ThreePopularCryptoStyle>
         <ProfileContainer>
           <CostDifferenceStyle>
-            <span>{`${currentMoney ?? 0} USD`}$</span>
+            <span>{`${currentMoney.toLocaleString("en-US")} USD`}$</span>
             {difference > 0 ? (
               <TextCostDifferenceStyle color="green">
-                +{difference}
+                +{difference.toLocaleString("en-US")}
               </TextCostDifferenceStyle>
             ) : (
-              <TextCostDifferenceStyle> {difference}</TextCostDifferenceStyle>
+              <TextCostDifferenceStyle>
+                {" "}
+                {difference.toLocaleString("en-US")}
+              </TextCostDifferenceStyle>
             )}
-            ({converToProcent((difference / myMoney) * 1000)}%)
+            ({converToProcent((difference / myMoney) * 100)}%)
           </CostDifferenceStyle>
 
-          <ProfileStyle>
+          <ProfileStyle onClick={() => setIsOpen(true)}>
             <img src={profileImage} alt="My Image" />
           </ProfileStyle>
         </ProfileContainer>
