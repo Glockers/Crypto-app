@@ -2,6 +2,10 @@ import { V2_MetaFunction, json } from "@remix-run/node";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import styled from "styled-components";
 import { getAllCoinsFn } from "~/api/query/useGetAllCrypto";
+import {
+  getPortfolioCurrentPriceFn,
+  getPortfolioPriceFn,
+} from "~/api/query/useGetPortfolio";
 import { CointTable } from "~/pages";
 
 export const meta: V2_MetaFunction = () => {

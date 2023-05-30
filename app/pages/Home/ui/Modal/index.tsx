@@ -108,7 +108,7 @@ export function ModalAddingCrypto({
           <Button
             variant="succsess"
             onClick={() => {
-              addToPortfolio({ count: count ?? 0, id: choosingData.id });
+              addToPortfolio({ count: count ?? 0, id: choosingData.id, price: choosingData.priceUsd });
               showToast("success", "Добавлено");
               setIsOpen(false);
             }}

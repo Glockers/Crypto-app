@@ -28,7 +28,7 @@ interface ICoinResult {
 
 export const getCoinFn = async ({
     id,
-}: ICoinProps): Promise<ICoinResult> => {
+}: ICoinProps) => {
     const response = await api.get<ICoinResult>(`/assets/${id}`)
     response.data.data = { ...response.data.data, img: `https://assets.coincap.io/assets/icons/${(response.data.data.symbol).toLowerCase()}@2x.png` }
     return response.data

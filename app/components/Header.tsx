@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import profileImage from "../../public/user-profile.svg";
 import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
@@ -8,6 +8,11 @@ import {
   getJSXElementProcent,
 } from "~/utils/convertor";
 import { SmartText } from "./Text";
+import {
+  getPortfolioCurrentPriceFn,
+  getPortfolioPriceFn,
+  useGetPortfolio,
+} from "~/api/query/useGetPortfolio";
 
 const BasicStyle = styled.div`
   display: flex;
@@ -17,7 +22,7 @@ const BasicStyle = styled.div`
 const HeaderStyle = styled.header`
   overflow: hidden;
   padding: 20px;
-  height: 100px;
+  /* height: 100px; */
   background-color: #f1f1f1;
   display: flex;
   align-items: center;
@@ -41,7 +46,8 @@ const ProfileStyle = styled.div`
 const CostDifferenceStyle = styled(BasicStyle)``;
 const ThreePopularCryptoStyle = styled.div`
   display: flex;
-  gap: 25px;
+  column-gap: 25px;
+  flex-wrap: wrap;
 `;
 
 const TextCostDifferenceStyle = styled.div`
@@ -50,6 +56,7 @@ const TextCostDifferenceStyle = styled.div`
 const ContainerStyled = styled.div`
   display: flex;
   gap: 30px;
+  /* flex-wrap: wrap; */
 `;
 
 const PopularElement = styled(BasicStyle)`
@@ -64,16 +71,44 @@ const ImageWrapper = styled.div`
   }
 `;
 
+const ProfileContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+type THeaderInfo = {
+  myMoney: number;
+  currentMoney: number;
+};
+
 const Header = (): ReactElement => {
-  const [myMoney, setMyMoney] = useState(134.32);
-  const [cost, setCost] = useState(2.38);
-  const { data } = useGetAllCrypto({ state: "popular" });
+  const [myMoney, setMyMoney] = useState(0);
+  const [currentMoney, setCurrentMoney] = useState(0);
+  const [difference, setDifference] = useState(0);
+  const { data: popularCryptos } = useGetAllCrypto({ state: "popular" });
+  const {
+    isMyMoneyLoading,
+    myMoney: money,
+    isMyCurrentMoney,
+    myCurrentMoney,
+  } = useGetPortfolio();
+
+  useEffect(() => {
+    if (money !== 0 || myCurrentMoney !== 0) {
+      setMyMoney(convertToNormalNumber(money ?? 0));
+      setCurrentMoney(convertToNormalNumber(myCurrentMoney ?? 0));
+      setDifference(
+        convertToNormalNumber((myCurrentMoney ?? 0) - (money ?? 0))
+      );
+    }
+    // console.log(currentMoney - myMoney, currentMoney, myMoney);
+  }, [money, myCurrentMoney]);
 
   return (
     <HeaderStyle>
       <ContainerStyled>
         <ThreePopularCryptoStyle>
-          {data?.data.map((element) => {
+          {popularCryptos?.data.map((element) => {
             return (
               <PopularElement key={element.id}>
                 <ImageWrapper>
@@ -92,20 +127,23 @@ const Header = (): ReactElement => {
             );
           })}
         </ThreePopularCryptoStyle>
-        <CostDifferenceStyle>
-          {`${myMoney} USD`}$
-          {cost > 0 ? (
-            <TextCostDifferenceStyle color="green">
-              +({cost})%
-            </TextCostDifferenceStyle>
-          ) : (
-            <TextCostDifferenceStyle> ({cost})%</TextCostDifferenceStyle>
-          )}
-        </CostDifferenceStyle>
+        <ProfileContainer>
+          <CostDifferenceStyle>
+            <span>{`${currentMoney ?? 0} USD`}$</span>
+            {difference > 0 ? (
+              <TextCostDifferenceStyle color="green">
+                +{difference}
+              </TextCostDifferenceStyle>
+            ) : (
+              <TextCostDifferenceStyle> {difference}</TextCostDifferenceStyle>
+            )}
+            ({converToProcent((difference / myMoney) * 1000)}%)
+          </CostDifferenceStyle>
 
-        <ProfileStyle>
-          <img src={profileImage} alt="My Image" />
-        </ProfileStyle>
+          <ProfileStyle>
+            <img src={profileImage} alt="My Image" />
+          </ProfileStyle>
+        </ProfileContainer>
       </ContainerStyled>
     </HeaderStyle>
   );

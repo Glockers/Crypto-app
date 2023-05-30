@@ -1,47 +1,37 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { addToStorage, getFromStorage } from "~/utils/local-storage/storage.config";
+import { IPortfolioResult } from "../query/useGetPortfolio";
 
 
-interface IAddProps {
+export interface IAddPortolioProps {
     id: string,
+    price: number,
     count: number
 }
 
-interface IAddResult {
-    id: string,
-    count: number
-}
 
 interface IDeleteProps {
     id: string,
     count: number
 }
 
-export const mutationFnAdd = async (data: IAddProps): Promise<IAddResult[] | null> => {
+export const mutationFnAdd = async (data: IAddPortolioProps): Promise<IAddPortolioProps | null> => {
     if (typeof window === 'undefined') {
         console.log("app is running on the server")
         return null;
     }
-    const result = getFromStorage<IAddResult[]>("portfolio");
-    let flag = false;
-    const newArray = result?.map((item) => {
-        if (item.id === data.id) {
-            flag = true;
-            console.log(item.count)
-            return { ...item, count: item.count + data.count };
-        }
-        return item;
-    })
 
-    if (flag) {
-        // console.log(newArray)
-        addToStorage("portfolio", newArray)
-        return newArray ?? []
+    const result = getFromStorage<IPortfolioResult[]>("portfolio");
+
+    if (!result) {
+        addToStorage("portfolio", [data])
     }
-    addToStorage<IAddResult[]>("portfolio", [...result || [], data])
-    return [...result || [], data]
+    else {
+        addToStorage("portfolio", [...result, data])
+    }
 
+    return data
 }
 
 const mutationFnRemove = async (data: any) => {
@@ -57,15 +47,21 @@ export const usePortfolioMutation = () => {
     >({
         mutationKey: ["portfolio"],
         mutationFn: mutationFnRemove,
+        onSuccess: (data) => {
+            client.invalidateQueries(["my-money"]);
+        }
     })
 
     const { mutate: addToPortfolio, isLoading: isAdding } = useMutation<
-        IAddResult[] | null,
+        IAddPortolioProps | null,
         AxiosError,
-        IAddProps
+        IAddPortolioProps
     >({
         mutationKey: ["portfolio"],
         mutationFn: mutationFnAdd,
+        onSuccess: (data) => {
+            client.invalidateQueries(["my-money", "my-current-money"]);
+        }
     })
 
     return { addToPortfolio, isAdding }

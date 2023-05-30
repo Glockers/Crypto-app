@@ -162,7 +162,11 @@ export function CoinContent(): ReactElement {
   const handleForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (count && count > 0) {
-      addToPortfolio({ count: count, id: id ?? "" });
+      addToPortfolio({
+        count: count,
+        id: id ?? "",
+        price: coin!?.data.priceUsd,
+      });
       showToast("success", "Криптовалюта добавлена!");
       setCount(0);
       inputRef!.current!.value = "";
