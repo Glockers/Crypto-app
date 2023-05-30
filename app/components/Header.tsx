@@ -7,7 +7,7 @@ import {
   convertToNormalNumber,
   getJSXElementProcent,
 } from "~/utils/convertor";
-import { SmartText } from "./Text";
+import { SmartText } from "../shared/Text";
 import {
   getPortfolioCurrentPriceFn,
   getPortfolioPriceFn,

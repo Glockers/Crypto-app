@@ -10,8 +10,8 @@ import {
 } from "react";
 import { styled } from "styled-components";
 import { useGetHistoryCoin } from "~/api/query/useGetCryptoHistory";
-import Button from "~/components/Button";
-import { SmartText } from "~/components/Text";
+import Button from "~/shared/Button";
+import { SmartText } from "~/shared/Text";
 import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
 import { useGetCoin } from "~/api/query/useGetOneCoin";
@@ -20,7 +20,7 @@ import {
   mutationFnAdd,
   usePortfolioMutation,
 } from "~/api/mutation/usePortfolioMutation";
-import useToast from "~/components/Toast";
+import useToast from "~/shared/Toast";
 
 const Container = styled.div`
   padding: 1rem;

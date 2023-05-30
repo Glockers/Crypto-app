@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { ReactNode, createContext, useContext } from "react";
-import useToast, { ToastOptions } from "~/components/Toast";
+import useToast, { ToastOptions } from "~/shared/Toast";
 
 type UseMessageReturnType = {
   showToast: (

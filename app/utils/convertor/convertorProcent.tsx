@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { SmartText } from "~/components/Text";
+import { SmartText } from "~/shared/Text";
 
 export function converToProcent(
   number: number,

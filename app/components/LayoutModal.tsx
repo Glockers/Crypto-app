@@ -1,6 +1,11 @@
 import { ReactElement } from "react";
-import Modal from "./Modal";
-import Button from "./Button";
+import Modal from "../shared/Modal";
+import Button from "../shared/Button";
+import { styled } from "styled-components";
+
+const Title = styled.h2`
+  text-align: center;
+`;
 
 interface IProps {
   isOpen: boolean;
@@ -10,7 +15,7 @@ interface IProps {
 export const LayoutModal = ({ isOpen, setIsOpen }: IProps): ReactElement => {
   return (
     <Modal isOpen={isOpen}>
-      <h1>test</h1>
+      <Title>Мой портфель</Title>
       <Button onClick={() => setIsOpen(!isOpen)}>close</Button>
     </Modal>
   );

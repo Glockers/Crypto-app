@@ -8,9 +8,9 @@ import {
 import styled from "styled-components";
 import { usePortfolioMutation } from "~/api/mutation/usePortfolioMutation";
 import { ICoin } from "~/api/query/useGetOneCoin";
-import Button from "~/components/Button";
-import Modal from "~/components/Modal";
-import useToast from "~/components/Toast";
+import Button from "~/shared/Button";
+import Modal from "~/shared/Modal";
+import useToast from "~/shared/Toast";
 import { useNotificationContext } from "~/utils/notification/NotificationContext";
 
 const Container = styled.div`
@@ -108,7 +108,11 @@ export function ModalAddingCrypto({
           <Button
             variant="succsess"
             onClick={() => {
-              addToPortfolio({ count: count ?? 0, id: choosingData.id, price: choosingData.priceUsd });
+              addToPortfolio({
+                count: count ?? 0,
+                id: choosingData.id,
+                price: choosingData.priceUsd,
+              });
               showToast("success", "Добавлено");
               setIsOpen(false);
             }}

@@ -1,7 +1,7 @@
 import { NavLink } from "@remix-run/react";
 import { ReactElement } from "react";
 import styled from "styled-components";
-import Button from "~/components/Button";
+import Button from "~/shared/Button";
 import Image from "~/../public/back_83894.svg";
 const Container = styled.div`
   max-width: 1127px;

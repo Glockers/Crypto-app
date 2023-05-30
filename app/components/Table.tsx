@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import { styled } from "styled-components";
-import Pagination from "./Pagination";
+import Pagination from "../shared/Pagination";
 
 export interface ITableColumns<T> {
   title: string;
