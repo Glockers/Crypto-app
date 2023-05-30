@@ -24,6 +24,12 @@ const HeaderContainer = styled.div`
   max-width: 1127px;
   padding: 0 1rem;
   display: flex;
+
+  @media (max-width: 950px) {
+    flex-direction: column;
+    padding: 0px;
+    align-items: center;
+  }
 `;
 
 const RankStyle = styled.div`
@@ -58,7 +64,19 @@ const InfoCoin = styled.div`
 
   .price-coin-container {
     display: flex;
-    gap: 20px;
+    gap: 5px;
+
+    /* gap: 20px; */
+    /* justify-content: center; */
+  }
+
+  @media (max-width: 950px) {
+    font-size: 32px;
+
+    .price-coin-container {
+      /* gap: 20px; */
+      justify-content: center;
+    }
   }
 `;
 
@@ -81,6 +99,15 @@ const SupplyContainer = styled.div`
       font-size: 1.5rem;
       font-weight: 600;
     }
+  }
+
+  @media (max-width: 950px) {
+    font-size: 32px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 32px;
+    flex-direction: column;
   }
 `;
 
