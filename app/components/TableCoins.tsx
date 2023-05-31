@@ -18,6 +18,15 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 15px -3px !important;
   border: none !important;
+  /* 
+  @media (max-width: 600px) {
+    font-size: 12px;
+  } */
+
+  @media (max-width: 500px) {
+    overflow-x: auto;
+  }
+
   th,
   td {
     /* border: 1px solid #ccc; */
@@ -35,6 +44,12 @@ const StyledTable = styled.table`
   }
 `;
 
+const TableWrapper = styled.div`
+  @media (max-width: 650px) {
+    overflow: overlay;
+  }
+`;
+
 export const Table = <T extends { id: string | number }>({
   columns,
   countElementOnPage,
@@ -46,33 +61,35 @@ export const Table = <T extends { id: string | number }>({
   };
   return (
     <>
-      <StyledTable>
-        <thead>
-          <tr>
-            {columns.map((column, index) => (
-              <th key={index}>{column.title}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {dataSource
-            .slice(
-              countElementOnPage * currentPage - countElementOnPage,
-              countElementOnPage * currentPage
-            )
-            .map((row, index) => (
-              <tr key={index}>
-                {columns.map((column, colIndex) => (
-                  <td key={colIndex}>
-                    {column?.render
-                      ? (column?.render(row) as any)
-                      : (row[column.dataIndex] as any)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </StyledTable>
+      <TableWrapper>
+        <StyledTable>
+          <thead>
+            <tr>
+              {columns.map((column, index) => (
+                <th key={index}>{column.title}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {dataSource
+              .slice(
+                countElementOnPage * currentPage - countElementOnPage,
+                countElementOnPage * currentPage
+              )
+              .map((row, index) => (
+                <tr key={index}>
+                  {columns.map((column, colIndex) => (
+                    <td key={colIndex}>
+                      {column?.render
+                        ? (column?.render(row) as any)
+                        : (row[column.dataIndex] as any)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </StyledTable>
+      </TableWrapper>
       <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(

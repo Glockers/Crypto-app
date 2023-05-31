@@ -98,6 +98,11 @@ const Input = styled.input`
 
 const InputContainetText = styled.div`
   font-weight: bold;
+
+  @media (max-width: 660px) {
+    font-size: 24px;
+    text-align: center;
+  }
 `;
 const ButtonContainer = styled.div`
   text-align: center;

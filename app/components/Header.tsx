@@ -8,34 +8,37 @@ import {
   getJSXElementProcent,
 } from "~/utils/convertor";
 import { SmartText } from "../shared/Text";
-import {
-  getPortfolioCurrentPriceFn,
-  getPortfolioPriceFn,
-  useGetCostPortfolio,
-} from "~/api/query/useGetCostMyPortfolio";
+import { useGetCostPortfolio } from "~/api/query/useGetCostMyPortfolio";
 
-const BasicStyle = styled.div`
+const Flex = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
 `;
 
 const HeaderStyle = styled.header`
   overflow: hidden;
   padding: 20px;
-  /* height: 100px; */
   background-color: #f1f1f1;
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
+
+  /* @media (max-width: 960px) {
+    justify-content: center;
+  } */
 `;
 
 const ProfileStyle = styled.div`
-  max-width: 40px;
-  max-height: 40px;
+  width: 40px;
+  height: 40px;
 
   img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
   }
 
   img:hover {
@@ -43,24 +46,39 @@ const ProfileStyle = styled.div`
   }
 `;
 
-const CostDifferenceStyle = styled(BasicStyle)``;
-const ThreePopularCryptoStyle = styled.div`
-  display: flex;
+const CostDifferenceStyle = styled(Flex)`
+  align-items: center;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
+`;
+
+const ThreePopularCryptoStyle = styled(Flex)`
   column-gap: 25px;
   flex-wrap: wrap;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const TextCostDifferenceStyle = styled.div`
   color: ${({ color }: any) => color || "red"};
 `;
-const ContainerStyled = styled.div`
-  display: flex;
+const ContainerStyled = styled(Flex)`
   gap: 30px;
-  /* flex-wrap: wrap; */
+  justify-content: space-between;
+
+  @media (max-width: 500px) {
+    /* align-items: center; */
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 `;
 
-const PopularElement = styled(BasicStyle)`
-  display: flex;
+const PopularElement = styled(Flex)`
+  align-items: center;
   gap: 2px;
 `;
 
@@ -71,10 +89,15 @@ const ImageWrapper = styled.div`
   }
 `;
 
-const ProfileContainer = styled.div`
-  display: flex;
+const ProfileContainer = styled(Flex)`
   gap: 10px;
+
+  @media (max-width: 960px) {
+    align-items: center;
+  }
 `;
+
+const DiffrenceWrapper = styled(Flex)``;
 
 function calculateProcent(myMoney: number, difference: number) {
   const calculatedValue = (difference / myMoney) * 100;
@@ -83,9 +106,6 @@ function calculateProcent(myMoney: number, difference: number) {
   else {
     return calculatedValue;
   }
-  // Math.fround(difference / myMoney) * 100 > 0.01
-  //   ? converToProcent((difference / myMoney) * 100)
-  //   : (difference / myMoney) * 100;
 }
 
 interface IProps {
@@ -130,16 +150,18 @@ const Header = ({ setIsOpen }: IProps): ReactElement => {
         <ProfileContainer>
           <CostDifferenceStyle>
             <span>{`${currentMoney.toLocaleString("en-US")} USD`}$</span>
-            {difference > 0 ? (
-              <TextCostDifferenceStyle color="green">
-                +{difference.toLocaleString("en-US")}
-              </TextCostDifferenceStyle>
-            ) : (
-              <TextCostDifferenceStyle>
-                {difference.toLocaleString("en-US")}
-              </TextCostDifferenceStyle>
-            )}
-            <span>({myMoney && calculateProcent(myMoney, difference)}%)</span>
+            <DiffrenceWrapper>
+              {difference > 0 ? (
+                <TextCostDifferenceStyle color="green">
+                  +{difference.toLocaleString("en-US")}
+                </TextCostDifferenceStyle>
+              ) : (
+                <TextCostDifferenceStyle>
+                  {difference.toLocaleString("en-US")}
+                </TextCostDifferenceStyle>
+              )}
+              <span>({myMoney && calculateProcent(myMoney, difference)}%)</span>
+            </DiffrenceWrapper>{" "}
           </CostDifferenceStyle>
           <ProfileStyle onClick={() => setIsOpen(true)}>
             <img src={profileImage} alt="My Image" />

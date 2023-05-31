@@ -13,6 +13,10 @@ const Container = styled.div`
   overflow: hidden;
   min-height: 100vh;
   padding: 30px;
+
+  @media (max-width: 600px) {
+    padding: 15px;
+  }
 `;
 
 const Text = styled.h1`
