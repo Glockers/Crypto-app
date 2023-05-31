@@ -1,50 +1,66 @@
-import { FC, ReactElement } from "react";
+import React from "react";
 import styled from "styled-components";
 
-const PaginationWrapper = styled.div`
+type PaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  onChangePage: (page: number) => void;
+};
+
+const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+
+  @media (max-width: 400px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const PageButton = styled.button<{ isActive: boolean }>`
   padding: 8px 12px;
-  margin: 0 5px;
-  background-color: ${(props) => (props.isActive ? "#333" : "#ccc")};
-  color: #fff;
+  margin: 0 4px;
   border: none;
-  cursor: pointer;
-  outline: none;
+  background-color: ${(props) => (props.isActive ? "blue" : "transparent")};
+  color: ${(props) => (props.isActive ? "white" : "black")};
+  cursor: ${(props) => (props.isActive ? "default" : "pointer")};
+
+  @media (max-width: 400px) {
+    margin: 4px;
+  }
 `;
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (pageNumber: number) => void;
-}
-
-const Pagination: FC<PaginationProps> = ({
+const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
-  onPageChange,
-}): ReactElement => {
+  onChangePage,
+}) => {
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      onChangePage(page);
+    }
+  };
+
   const renderPageButtons = () => {
-    const buttons = [];
-    for (let i = 1; i <= totalPages; i++) {
-      buttons.push(
+    const pageButtons = [];
+
+    for (let page = 1; page <= totalPages; page++) {
+      const isActive = page === currentPage;
+      pageButtons.push(
         <PageButton
-          key={i}
-          isActive={i === currentPage}
-          onClick={() => onPageChange(i)}
+          key={page}
+          isActive={isActive}
+          onClick={() => handlePageChange(page)}
         >
-          {i}
+          {page}
         </PageButton>
       );
     }
-    return buttons;
+
+    return pageButtons;
   };
 
-  return <PaginationWrapper>{renderPageButtons()}</PaginationWrapper>;
+  return <PaginationContainer>{renderPageButtons()}</PaginationContainer>;
 };
 
 export default Pagination;

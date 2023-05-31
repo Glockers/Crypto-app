@@ -92,10 +92,8 @@ export const Table = <T extends { id: string | number }>({
       </TableWrapper>
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(
-          dataSource ? dataSource.length / countElementOnPage : 1
-        )} // Общее количество страниц
-        onPageChange={handlePageChange}
+        totalPages={10}
+        onChangePage={handlePageChange}
       />
     </>
   );
