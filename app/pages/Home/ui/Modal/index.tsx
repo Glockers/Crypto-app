@@ -10,7 +10,6 @@ import { usePortfolioMutation } from "~/api/mutation/usePortfolioMutation";
 import { ICoin } from "~/api/query/useGetOneCoin";
 import Button from "~/shared/Button";
 import Modal from "~/shared/Modal";
-import useToast from "~/shared/Toast";
 import { useNotificationContext } from "~/utils/notification/NotificationContext";
 
 const Container = styled.div`
@@ -22,6 +21,11 @@ const Container = styled.div`
 const ControlContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  @media (max-width: 400px) {
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -47,6 +51,15 @@ const Title = styled.h2`
   margin: 0;
   font-size: 32px;
   text-align: center;
+  @media (max-width: 400px) {
+    font-size: 24px;
+  }
+`;
+
+const CustomModal = styled(Modal)`
+  @media (max-width: 400px) {
+    padding: 5px;
+  }
 `;
 
 interface IProps {
@@ -84,7 +97,7 @@ export function ModalAddingCrypto({
   );
 
   return (
-    <Modal isOpen={isOpen}>
+    <CustomModal isOpen={isOpen}>
       <Container>
         <Title>
           Добавить {choosingData.name}({choosingData.symbol})
@@ -121,6 +134,6 @@ export function ModalAddingCrypto({
           </Button>
         </ControlContainer>
       </Container>
-    </Modal>
+    </CustomModal>
   );
 }

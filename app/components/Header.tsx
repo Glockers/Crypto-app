@@ -27,6 +27,10 @@ const HeaderStyle = styled.header`
     flex-direction: column;
   }
 
+  @media (max-width: 260px) {
+    font-size: 12px;
+  }
+
   /* @media (max-width: 960px) {
     justify-content: center;
   } */
