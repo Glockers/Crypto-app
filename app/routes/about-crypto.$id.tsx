@@ -30,14 +30,6 @@ export async function loader({ params }: LoaderArgs) {
   return json({ dehydratedState: dehydrate(queryClient) });
 }
 
-// export const action = async ({ request, params }: ActionArgs) => {
-//   const form = await request.formData();
-//   const count = form.get("count");
-//   const fields = { count };
-//   // mutationFnAdd({ count: count as any, id: "bitcoid" });
-//   return fields;
-// };
-
 const Layout = styled.div`
   overflow: hidden;
   min-height: 100vh;

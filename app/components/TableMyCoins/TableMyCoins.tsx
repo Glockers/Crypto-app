@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import { useGetPortfolio } from "~/api/query/useGetPortfolio";
 import { useTableMyCoinsConfig } from "./tableMyCoins.config";
@@ -56,8 +56,8 @@ export function TableMyCoins(): ReactElement {
                   {columns.map((column, colIndex) => (
                     <td key={colIndex}>
                       {column?.render
-                        ? (column?.render(row) as any)
-                        : (row[column.dataIndex] as any)}
+                        ? column?.render(row)
+                        : (row[column.dataIndex] as ReactNode)}
                     </td>
                   ))}
                 </tr>

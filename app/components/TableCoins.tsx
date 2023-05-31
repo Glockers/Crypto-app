@@ -1,12 +1,13 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import { styled } from "styled-components";
 import Pagination from "../shared/Pagination";
 
 export interface ITableColumns<T> {
   title: string;
   dataIndex: keyof T;
-  render?: (record: T) => {};
+  render?: (record: T) => ReactNode;
 }
+
 interface ITableProps<T> {
   dataSource: T[];
   columns: ITableColumns<T>[];
@@ -18,10 +19,6 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 15px -3px !important;
   border: none !important;
-  /* 
-  @media (max-width: 600px) {
-    font-size: 12px;
-  } */
 
   @media (max-width: 500px) {
     overflow-x: auto;
@@ -29,7 +26,6 @@ const StyledTable = styled.table`
 
   th,
   td {
-    /* border: 1px solid #ccc; */
     padding: 8px;
     text-align: left;
   }
@@ -59,6 +55,7 @@ export const Table = <T extends { id: string | number }>({
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+
   return (
     <>
       <TableWrapper>
@@ -80,9 +77,9 @@ export const Table = <T extends { id: string | number }>({
                 <tr key={index}>
                   {columns.map((column, colIndex) => (
                     <td key={colIndex}>
-                      {column?.render
-                        ? (column?.render(row) as any)
-                        : (row[column.dataIndex] as any)}
+                      {column.render
+                        ? column.render(row)
+                        : (row[column.dataIndex] as ReactNode)}
                     </td>
                   ))}
                 </tr>

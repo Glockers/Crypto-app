@@ -68,14 +68,13 @@ const ThreePopularCryptoStyle = styled(Flex)`
 `;
 
 const TextCostDifferenceStyle = styled.div`
-  color: ${({ color }: any) => color || "red"};
+  color: ${({ color }) => color || "red"};
 `;
 const ContainerStyled = styled(Flex)`
   gap: 30px;
   justify-content: space-between;
 
   @media (max-width: 500px) {
-    /* align-items: center; */
     flex-direction: column-reverse;
     align-items: center;
   }

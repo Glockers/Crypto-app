@@ -15,7 +15,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { useDehydratedState } from "use-dehydrated-state";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { NotificationProvider } from "./utils/notification/NotificationContext";
 
 export const links: LinksFunction = () => {
@@ -48,7 +48,12 @@ export default function App() {
   );
 }
 
-function Document({ children, title }: any) {
+type TDocumentProps = {
+  children: ReactNode;
+  title: string;
+};
+
+function Document({ children, title }: TDocumentProps) {
   return (
     <html lang="en">
       <head>

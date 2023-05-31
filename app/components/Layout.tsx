@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import styled from "styled-components";
 import Header from "./Header";
 import { LayoutModal } from "./LayoutModal";
@@ -10,7 +10,11 @@ const Container = styled.div`
 
 const Main = styled.main``;
 
-const Layout = ({ children }: any): ReactElement => {
+type TLayoutProps = {
+  children: ReactNode;
+};
+
+const Layout = ({ children }: TLayoutProps): ReactElement => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <Container>
