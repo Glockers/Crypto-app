@@ -1,24 +1,18 @@
-import { ReactElement, useEffect, useState } from "react";
-import { styled } from "styled-components";
-import { useGetAllCrypto } from "~/api/query/useGetAllCrypto";
+import { ReactElement, useState } from "react";
 import { ICoin } from "~/api/query/useGetOneCoin";
-import { Spinner } from "~/shared/Spinner";
 import { Table } from "~/components/TableCoins";
 import { useTableConfig } from "./useTableConfig";
 import { ModalAddingCrypto } from "../Modal";
+import { ContentContainer } from "./CoinTable.style";
 
-const ContentContainer = styled.div`
-  margin-top: 30px;
-`;
+interface ICoinTableProps {
+  coins: Array<ICoin>;
+}
 
-export function CointTable(): ReactElement {
-  const { data, isLoading } = useGetAllCrypto({ state: "all" });
+export function CointTable({ coins }: ICoinTableProps): ReactElement {
   const [isOpen, setIsOpen] = useState(false);
   const [choosingData, setChoosingData] = useState<ICoin>();
   const { columns } = useTableConfig(setIsOpen, setChoosingData);
-  // useEffect(() => {
-  //   console.log(isOpen, choosingData);
-  // }, [choosingData]);
 
   return (
     <ContentContainer>
@@ -28,7 +22,7 @@ export function CointTable(): ReactElement {
         setIsOpen={setIsOpen}
       />
       <Table<ICoin>
-        dataSource={data!?.data}
+        dataSource={coins}
         columns={columns}
         countElementOnPage={10}
       />

@@ -7,9 +7,11 @@ interface ToastProps {
   duration?: number;
 }
 
-export interface ToastOptions {
-  duration?: number;
-}
+export type IShowToast = (
+  type: "success" | "error",
+  message: string,
+  options?: number
+) => void;
 
 const slideInLeft = keyframes`
   from {
@@ -59,15 +61,11 @@ const useToast = () => {
     }
   }, [toastQueue]);
 
-  const showToast = (
-    type: "success" | "error",
-    message: string,
-    options?: ToastOptions
-  ) => {
+  const showToast: IShowToast = (type, message, options) => {
     const toastProps: ToastProps = {
       type,
       message,
-      duration: options?.duration,
+      duration: options,
     };
 
     setToastQueue((prevQueue) => [...prevQueue, toastProps]);

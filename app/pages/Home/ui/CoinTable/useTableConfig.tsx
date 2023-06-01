@@ -1,5 +1,4 @@
 import { Link } from "@remix-run/react";
-import styled from "styled-components";
 import { ICoin } from "~/api/query/useGetOneCoin";
 import Button from "~/shared/Button";
 import { ITableColumns } from "~/components/TableCoins";
@@ -8,29 +7,7 @@ import {
   convertToNormalNumber,
   getJSXElementProcent,
 } from "~/utils";
-
-const WrapperNameCrypto = styled.div`
-  display: flex;
-  gap: 5px;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const ImageWrapper = styled.div`
-  img {
-    height: 30px !important;
-    width: 30px !important;
-  }
-`;
-
-function convertToShortNumber(number: number, significantDigits = 2) {
-  const power = Math.floor(Math.log10(Math.abs(number)));
-  const multiplier = 10 ** (power - significantDigits + 1);
-  const roundedNumber = Math.round(number / multiplier) * multiplier;
-
-  return roundedNumber;
-}
+import { ImageWrapper, WrapperNameCrypto } from "./CoinTable.style";
 
 export const useTableConfig = (
   setModal: Function,
@@ -105,3 +82,11 @@ export const useTableConfig = (
 
   return { columns };
 };
+
+function convertToShortNumber(number: number, significantDigits = 2) {
+  const power = Math.floor(Math.log10(Math.abs(number)));
+  const multiplier = 10 ** (power - significantDigits + 1);
+  const roundedNumber = Math.round(number / multiplier) * multiplier;
+
+  return roundedNumber;
+}

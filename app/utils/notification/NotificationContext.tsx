@@ -1,17 +1,13 @@
 import { ReactElement } from "react";
 import { ReactNode, createContext, useContext } from "react";
-import useToast, { ToastOptions } from "~/shared/Toast";
+import useToast, { IShowToast } from "~/shared/Toast";
 
-type UseMessageReturnType = {
-  showToast: (
-    type: "success" | "error",
-    message: string,
-    options?: ToastOptions
-  ) => void;
+interface IMessageReturnType {
+  showToast: IShowToast;
   ToastContainer: JSX.Element;
-};
+}
 
-const NotificationContext = createContext<UseMessageReturnType | undefined>(
+const NotificationContext = createContext<IMessageReturnType | undefined>(
   undefined
 );
 
@@ -32,7 +28,7 @@ export const NotificationProvider = ({
   );
 };
 
-export const useNotificationContext = () => {
+export const useNotificationContext = (): IMessageReturnType => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
