@@ -25,24 +25,15 @@ export interface IUseGetMeQueryProps {
 export const getAllCoinsFn = async ({
     state
 }: IUseGetMeQueryProps) => {
-    if (state === "popular") {
-        const response = await api.get<CoinCapAssetsResponse>("/assets?limit=3")
-        response.data.data = response.data.data.map(elem => {
-            return { ...elem, priceUsd: Number(elem.priceUsd), img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
-        })
-        return response.data
-    }
-
-    if (state === "all") {
-        let response = await api.get<CoinCapAssetsResponse>("/assets")
-        response.data.data = response.data.data.map(elem => {
-            return { ...elem, priceUsd: Number(elem.priceUsd), img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
-        })
-        return response.data
-    }
-
-    return {} as CoinCapAssetsResponse
-
+    const response = await api.get<CoinCapAssetsResponse>("/assets", {
+        params: {
+            limit: state === "popular" ? 3 : undefined
+        }
+    })
+    response.data.data = response.data.data.map(elem => {
+        return { ...elem, priceUsd: Number(elem.priceUsd), img: `https://assets.coincap.io/assets/icons/${(elem.symbol).toLowerCase()}@2x.png` }
+    })
+    return response.data
 };
 
 export const useGetAllCrypto = (props: IUseGetMeQueryProps) => {

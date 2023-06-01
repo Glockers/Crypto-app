@@ -159,7 +159,7 @@ export function CoinContent(): ReactElement {
   const [price, setPrice] = useState<number>();
   const { ToastContainer, showToast } = useToast();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { addToPortfolio, isAdding } = usePortfolioMutation();
+  const { addToPortfolio } = usePortfolioMutation();
 
   useEffect(() => {
     setPrice(() => (count ? count * (coin?.data.priceUsd || 0) : 0));
