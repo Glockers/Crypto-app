@@ -1,9 +1,9 @@
 import { ReactElement, useState } from "react";
-import { ICoin } from "~/api/query/useGetOneCoin";
 import { Table } from "~/components/TableCoins";
 import { useTableConfig } from "./useTableConfig";
 import { ModalAddingCrypto } from "../Modal";
 import { ContentContainer } from "./CoinTable.style";
+import { ICoin } from "~/api";
 
 interface ICoinTableProps {
   coins: Array<ICoin>;

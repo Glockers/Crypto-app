@@ -1,17 +1,9 @@
 import { ReactElement, useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import { options } from "./config";
-import { useParams } from "@remix-run/react";
-import {
-  IHistoryCrypto,
-  useGetHistoryCoin,
-} from "~/api/query/useGetCryptoHistory";
 import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { comparisonPrice } from "~/utils";
-
-type TParams = {
-  id: string;
-};
+import { IHistoryCrypto } from "~/api";
 
 interface IProps {
   initData: IHistoryCrypto;

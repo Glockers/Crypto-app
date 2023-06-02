@@ -5,14 +5,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { usePortfolioMutation } from "~/api/mutation/usePortfolioMutation";
-import { ICoin } from "~/api/query/useGetOneCoin";
 import { useNotificationContext } from "~/utils/notification/NotificationContext";
 import { Container, CustomModal, Title } from "./ModalAddingCrypto.style";
 import {
   ModalAddingContent,
   ModalAddingControl,
 } from "./ModalAddingCrypto.context";
+import { ICoin, usePortfolioMutation } from "~/api";
 
 interface IProps {
   isOpen: boolean;
