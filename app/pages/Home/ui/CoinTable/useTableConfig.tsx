@@ -1,13 +1,13 @@
 import { Link } from "@remix-run/react";
-import { ICoin } from "~/api/query/useGetOneCoin";
 import Button from "~/shared/Button";
-import { ITableColumns } from "~/components/TableCoins";
 import {
   converToProcent,
   convertToNormalNumber,
   getJSXElementProcent,
 } from "~/utils";
 import { ImageWrapper, WrapperNameCrypto } from "./CoinTable.style";
+import { ITableColumns } from "~/components/TableCoins";
+import { ICoin } from "~/api";
 
 export const useTableConfig = (
   setModal: Function,

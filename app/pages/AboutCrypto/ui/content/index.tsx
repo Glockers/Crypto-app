@@ -1,40 +1,61 @@
 import { Form } from "@remix-run/react";
-import {
-
-  ChangeEvent,
-  FormEvent,
-  ReactElement,
-  RefObject,
-
-} from "react";
+import { ChangeEvent, FormEvent, ReactElement, RefObject } from "react";
 import { convertTimestampToDate } from "~/utils/convertor/dateConvertor";
 import { HistoryChart } from "../chart";
 import { convertToNormalNumber } from "~/utils";
 import { ICoin, IHistoryCrypto } from "~/api";
-import { ButtonContainer, Container, ContainerControl, ContainerInfo, CustomButtom, FormContainerData, HistoryTitle, Input, InputContainer, InputContainetText, NameCoinCointainer, SubContainer, TitleContainer } from "./CoinContent.style";
-
+import {
+  ButtonContainer,
+  Container,
+  ContainerControl,
+  ContainerInfo,
+  CustomButtom,
+  FormContainerData,
+  HistoryTitle,
+  Input,
+  InputContainer,
+  InputContainetText,
+  NameCoinCointainer,
+  SubContainer,
+  TitleContainer,
+} from "./CoinContent.style";
 
 interface ICoinContent {
-  coin: ICoin,
-  historyCoin: IHistoryCrypto,
-  price: number,
+  coin: ICoin;
+  historyCoin: IHistoryCrypto;
+  price: number;
   handleCount: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleForm: (event: FormEvent<HTMLFormElement>) =>void;
+  handleForm: (event: FormEvent<HTMLFormElement>) => void;
   inputRef: RefObject<HTMLInputElement>;
 }
 
-export function CoinContent({ coin, historyCoin, price, handleCount, handleForm, inputRef }: ICoinContent): ReactElement {
+export function CoinContent({
+  coin,
+  historyCoin,
+  price,
+  handleCount,
+  handleForm,
+  inputRef,
+}: ICoinContent): ReactElement {
   return (
     <Container>
       <SubContainer>
         <Content coin={coin} historyCoin={historyCoin} />
-        <Control price={price} handleCount={handleCount} handleForm={handleForm} inputRef={inputRef}/>
+        <Control
+          price={price}
+          handleCount={handleCount}
+          handleForm={handleForm}
+          inputRef={inputRef}
+        />
       </SubContainer>
     </Container>
   );
 }
 
-const Content = ({ coin, historyCoin }: Pick<ICoinContent, "coin" | "historyCoin">): ReactElement => {
+const Content = ({
+  coin,
+  historyCoin,
+}: Pick<ICoinContent, "coin" | "historyCoin">): ReactElement => {
   return (
     <ContainerInfo>
       <HistoryTitle>
@@ -55,10 +76,18 @@ const Content = ({ coin, historyCoin }: Pick<ICoinContent, "coin" | "historyCoin
       </HistoryTitle>
       <HistoryChart initData={historyCoin!} />
     </ContainerInfo>
-  )
-}
+  );
+};
 
-const Control = ({handleForm,inputRef, handleCount, price } : Pick<ICoinContent, "price" | "handleCount" | "handleForm" | "inputRef">): ReactElement => {
+const Control = ({
+  handleForm,
+  inputRef,
+  handleCount,
+  price,
+}: Pick<
+  ICoinContent,
+  "price" | "handleCount" | "handleForm" | "inputRef"
+>): ReactElement => {
   return (
     <ContainerControl>
       <div className="control-wrapper">
@@ -90,5 +119,5 @@ const Control = ({handleForm,inputRef, handleCount, price } : Pick<ICoinContent,
         </Form>
       </div>
     </ContainerControl>
-  )
-}
+  );
+};

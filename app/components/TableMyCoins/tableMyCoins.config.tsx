@@ -1,5 +1,5 @@
 import Button from "~/shared/Button";
-import { ITableColumns } from "~/components/TableCoins";
+import { ITableColumns } from "~/components/TableCoins/TableCoins";
 import { IPortfolio } from "~/api/query/useGetPortfolio";
 
 export const useTableMyCoinsConfig = (clearCoin: Function) => {

@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import { Table } from "~/components/TableCoins";
+import { Table } from "~/components/TableCoins/TableCoins";
 import { useTableConfig } from "./useTableConfig";
 import { ModalAddingCrypto } from "../Modal";
 import { ContentContainer } from "./CoinTable.style";

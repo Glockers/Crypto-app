@@ -1,14 +1,6 @@
 import { ReactElement, ReactNode, useState } from "react";
-import styled from "styled-components";
-import Header from "./Header";
 import { LayoutModal } from "./LayoutModal";
-
-const Container = styled.div`
-  height: 100%;
-  width: 100%;
-`;
-
-const Main = styled.main``;
+import { Header } from "./Header";
 
 type TLayoutProps = {
   children: ReactNode;
@@ -17,11 +9,11 @@ type TLayoutProps = {
 const Layout = ({ children }: TLayoutProps): ReactElement => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <Container>
+    <>
       <Header setIsOpen={setIsOpen} />
-      <Main>{children}</Main>
+      <main>{children}</main>
       <LayoutModal isOpen={isOpen} setIsOpen={setIsOpen} />
-    </Container>
+    </>
   );
 };
 
